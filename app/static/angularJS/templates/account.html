@@ -1,0 +1,89 @@
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Cuenta</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInRight">
+        <div class="col-md-4">
+            <div class="ibox float-e-margins">
+
+                <div>
+                    <div class="ibox-content profile-content">
+                        <div class="text-center profile-image">
+                            <img src="images/logo.png" class="img-circle circle-border m-b-md" alt="profile">
+                        </div>
+                        <h3>{{user.razonSocial}}</h3>
+                        <h4><strong>RFC:</strong> {{user.rfc}}</h4>
+                        <form method="POST"  id="uploadLogo" class="user-button">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="fileUpload btn btn-sm btn-primary">
+                                        <span>Subir logo</span>
+                                        <input id="logoFile" type="file" name="file[]" class="upload" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Actualizar correo electronico</h5>
+                </div>
+                <div class="ibox-content">
+                    <p>
+                        El correo configurado actualmente es el siguiente:
+                        <br><strong>{{user.correo}}</strong>
+                    </p>
+                    <br>
+                    <form class="" role="form" ng-submit="submitEmail()">
+                        <div class="row">
+                            <div class=" col-sm-8">
+                                <div class="form-group">
+                                    <input required ng-model="newEmail" type="email" class="form-control" placeholder="Nuevo correo">
+                                </div>
+                            </div>
+                            <div class=" col-sm-4">
+                                <input type="submit" ng-click="updateEmail()" class="btn  btn-sm  btn-primary btn-block" value="Actualizar" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Cambiar contraseña de acceso</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="" role="form" ng-submit="submitPass()">
+                        <div class="row">
+                            <div class=" col-sm-8">
+                                <div class="form-group">
+                                    <input minlength="6" required ng-model="pass" type="password" class="form-control" placeholder="Contraseña" id="pass">
+                                </div>
+                            </div>
+                            <div class=" col-sm-8">
+                                <div class="form-group">
+                                    <input minlength="6" required ng-model="passConfirm" type="password" class="form-control" placeholder="Confirma contraseña" id="passConfirm">
+                                </div>
+                            </div>
+                            <div class=" col-sm-4">
+                                <input type="submit" ng-click="updatePassWord()" class="btn  btn-sm  btn-primary btn-block" value="Actualizar" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
