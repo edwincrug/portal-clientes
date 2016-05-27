@@ -4,11 +4,11 @@
             <ul class="nav metismenu" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element"> <span>
-                        <!--img alt="image" class="img-circle" src="img/profile_small.jpg" /-->
+                        <img alt="image" class="img-circle circle-border m-b-md" src="images/perfil.png"/>
                          </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{razonSocial}}</strong>
-                         </span> <span class="text-muted text-xs block">{{rfc}} <b class="caret"></b></span> </span>
+                         </span> <span class="text-xs block">{{rfc}} <b class="caret"></b></span> </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a href="cuenta">Cuenta</a></li>
@@ -21,13 +21,19 @@
                     </div>
                 </li>
                 <li>
-                    <a href="/noticias"><i class="fa fa-newspaper-o"></i> <span class="nav-label">Noticias</span></a>
+                    <a title="Noticias" href="/noticias"><i class="fa fa-newspaper-o"></i> <span class="nav-label">Noticias</span></a>
                 </li>
                 <li>
-                    <a href="/ordenes-pendientes"><i class="fa fa-file-o"></i> <span class="nav-label">Ordenes</span></a>
+                    <a title="Facturas" href="/facturas-por-pagar"><i class="fa fa-file-o"></i> <span class="nav-label">Facturas</span></a>
                 </li>
                 <li>
-                    <a href="/cuenta"><i class="fa fa-user"></i> <span class="nav-label">Cuenta</span></a>
+                    <a title="Pedidos" href="#"><i class="fa fa-truck"></i> <span class="nav-label">Pedidos</span></a>
+                </li>
+                <li>
+                    <a title="Estado de cuenta" href="#"><i class="fa fa-area-chart"></i> <span class="nav-label">Estado de cuenta</span></a>
+                </li>
+                <li>
+                    <a title="Cuenta" href="/cuenta"><i class="fa fa-user"></i> <span class="nav-label">Cuenta</span></a>
                 </li>
             </ul>
         </div>
@@ -40,7 +46,7 @@
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
-                        <h3 class="m-r-lg text-muted welcome-message"><strong>GRUPO ANDRADE | </strong>Portal provedores</h3>
+                        <h3 class="m-r-lg text-muted welcome-message"><strong>GRUPO ANDRADE | </strong>Portal clientes</h3>
                     </li>
 
                     <li class="dropdown">

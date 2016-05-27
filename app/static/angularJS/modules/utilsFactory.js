@@ -1,9 +1,13 @@
 app.factory("Utils", function($http) {
     return {
-        b64toBlob: function(b64Data, contentType, sliceSize) {
+        b64toBlob: function(b64Data, contentType, sliceSize, data) {
             contentType = contentType || '';
             sliceSize = sliceSize || 512;
-            var byteCharacters = atob(b64Data);
+            console.log(data)
+            if (!data)
+                var byteCharacters = atob(b64Data);
+            else
+                var byteCharacters = b64Data
             var byteArrays = [];
 
             for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {

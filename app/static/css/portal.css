@@ -1,76 +1,81 @@
-@media (min-width: 768px) {
-   .nav-orders {
-        margin-left: 4px;
-    }
-    .nav-orders .col-sm-4 {
-        padding: 0px 9px 0px 6px;
-    }
-    .nav-orders .col-sm-4:first-child {
-        margin: 0px -16px 0px 8px!important;
-    }
-    .nav-orders .col-sm-4:last-child {
-        margin: 0px 8px 0px -16px!important;
-    }
+.nav-orders {
+    width: 100%;
 }
+@media (min-width: 768px) {}
 .nav-orders button {
-    border-radius: 0px;
+    width: 50%;
 }
-.dropzone {
-    min-height: auto;
-    text-align: center;
-    padding: 1em!important;
+.social-body img {
+    width: 100%;
+    height: 250px;
 }
-.dropzone .dz-default.dz-message span {
-    text-align: center;
-    display: block;
-    font-size: 18px;
-}
-
-.dropzone .dz-preview .dz-details, .dropzone-previews .dz-preview .dz-details{
-  width: 190px;
-  height: auto;
-}
-
-.dropzone .dz-preview, .dropzone-previews .dz-preview {
-  margin:0 20px 20px 20px;
-}
-
-.dropzone .dz-preview .dz-error-mark span, .dropzone-previews .dz-preview .dz-error-mark span, .dropzone .dz-preview .dz-success-mark span, .dropzone-previews .dz-preview .dz-success-mark span{
-  display: inline;
-}
-
-.social-body img{
-  width: 100%;
-  height: 250px;
-}
-
-.navbar-right{
+.navbar-right {
     float: right!important;
 }
-
-.fileUpload {
-    position: relative;
-    overflow: hidden;
-    margin: 10px;
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    text-align: center;
 }
-.fileUpload input.upload {
-    position: absolute;
-    top: 0;
-    right: 0;
+.cc-selector {
+    text-align: center;
+}
+.cc-selector input {
     margin: 0;
     padding: 0;
-    font-size: 20px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.banamex {
+    background-image: url(/images/banamex_logo.jpg);
+}
+.bancomer {
+    background-image: url(/images/bancomer_logo.jpg);
+}
+.santander {
+    background-image: url(/images/santander_logo.png);
+}
+.cc-selector input:active +.bank-cc {
+    opacity: .9;
+}
+.cc-selector div {
+    text-align: center;
+    display: inline-block;
+    margin: 2em;
+}
+.bank-cc {
     cursor: pointer;
-    opacity: 0;
-    filter: alpha(opacity=0);
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 200px;
+    height: 56px;
+    -webkit-transition: all 10ms ease-in;
+    -moz-transition: all 10ms ease-in;
+    -webkit-filter: brightness(1.8) grayscale(1) opacity(.7);
+    transition: all 10ms ease-in;
+    -moz-filter: brightness(1.8) grayscale(1) opacity(.7);
+    filter: brightness(1.8) grayscale(1) opacity(.7);
 }
-
-.nav-orders i{
-  font-size: 20px;
+.bank-cc:hover {
+    -webkit-filter: none;
+    -moz-filter: none;
+    filter: none;
+    box-shadow: 10px 10px 5px #888888;
 }
-
-.xmlContent{
-  word-break: break-word;
-  height: 400px;
-  overflow: auto;
+.nav-header {
+    background: #217996;
+}
+.nav-header img {
+    width: 120px;
+    height: 120px;
+}
+.radio {
+    margin-left: 2em;
+}
+.radio >input {
+    height: 1.5em;
+    width: 1.5em;
+}
+.radio >label {
+    font-size:  1.5em;
 }

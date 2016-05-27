@@ -47,9 +47,9 @@ Auth.prototype.getUser = function(req, res, next, cb) {
             return next(err);
         }
         if (!user) {
-            return res.status(401).send("No autorizado");
+            return cb(true)
         }
-        cb(user)
+        cb(null , user)
     })(req, res, next);
 }
 

@@ -1,0 +1,55 @@
+<div class="modal fade" id="payInvoceModal" tabindex="-1" role="dialog" aria-labelledby="payInvoceModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form name="pendingInvoceModalForm" method="post">
+                    <h1 class="pull-right">{{invoce.importe |currency}}</h1>
+                    <h2 class="modal-title" id="payInvoceModalLabel">Factura #{{invoce.noFactura}}</h2>
+                    <h3>Pagar antes de: {{invoce.fechaVencimiento | date:"dd/MM/yyyy" }} </h3>
+                    <hr>
+                    <span class="badge pull-right">{{invoce.estatus}}</span>
+                    <p>
+                        <b>Descripcion</b>
+                    </p>
+                    <p>
+                        {{invoce.descripcion}}
+                    </p>
+                    <p>
+                        <b>Fecha de emision</b>
+                    </p>
+                    <p>
+                        {{invoce.fechaEmision | date:"dd/MM/yyyy" }}
+                    </p>
+                    <hr>
+                    <h2>Selecciona metodo de pago</h2>
+
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="radio">
+                                <input ng-model="payMethod" type="radio" id="radioBank" value="1" name="radioInline">
+                                <label for="radioBank">Pasarela de pagos</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="radio">
+                                <input ng-model="payMethod" type="radio" id="radioReference" value="2" name="radioInline">
+                                <label for="radioReference">Referencia bancaria</label>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div ng-show="payMethod">
+                        <hr>
+                        <h2>Selecciona banco para pagar</h2>
+                        <div class="cc-selector">
+                            <div ng-repeat="bank in banks">
+                                <a ng-click="getReferenceByMethod(invoce.idFactura,bank.idBanco,invoce.idEmpresa,payMethod)"  href="#" class="bank-cc {{bank.id}}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

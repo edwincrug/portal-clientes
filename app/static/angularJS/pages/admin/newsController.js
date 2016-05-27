@@ -1,5 +1,5 @@
 app.controller('newsController', function($scope, New, User) {
-
+/*
     $scope.time = new Date();
     $scope.user;
     User.me().then(function(user) {
@@ -13,6 +13,6 @@ app.controller('newsController', function($scope, New, User) {
         New.setSeen(idNew, rfc).then(function(data) {
         })
     }
-
+*/
 
 })

@@ -5,7 +5,7 @@ app.controller('signupController', function($scope, User, AlertFactory, $state) 
     $scope.pass = ""
 
     $scope.submit = function() {
-        User.signup($scope.razon, $scope.email, $scope.rfc.toUpperCase(), $scope.pass)
+        User.signup($scope.name, $scope.email, $scope.rfc.toUpperCase(), $scope.pass)
             .success(function(data, status, headers, config) {
                 data[0].mensaje = decodeURIComponent(data[0].mensaje)
                 if (data[0].estatus == "ok") {

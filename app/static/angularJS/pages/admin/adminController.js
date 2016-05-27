@@ -1,5 +1,7 @@
-app.controller('adminController', function($scope, $state, User, Alert) {
-    User.me().then(function(user) {
+app.controller('adminController', function($scope, $state, User) {
+  $scope.razonSocial = "Oscar Paredes";
+  $scope.rfc = "PAGO120891AB9";
+    /*User.me().then(function(user) {
         $scope.razonSocial = user.data.razonSocial;
         $scope.rfc = user.data.rfc;
 
@@ -34,6 +36,7 @@ app.controller('adminController', function($scope, $state, User, Alert) {
             $state.go("login");
         });
     }
+    */
 
     $(document).ready(function() {
         // Add body-small class if window less than 768px

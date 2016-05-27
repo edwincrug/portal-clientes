@@ -1,10 +1,10 @@
 {
     "server": "http://192.168.20.9/ProveedorApi/api/",
-    "port": 4100,
+    "port": 4300,
     "SQL_user": "sa",
     "SQL_password": "S0p0rt3",
     "SQL_server": "192.168.20.9",
-    "SQL_database": "Talleres",
+    "SQL_database": "clientes",
     "SQL_connectionTimeout": 60000,
     "secret": "Andrade"
 }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Portal provedores</title>
+    <title>Portal clientes</title>
     <meta name="description" content="description project">
     <meta name="author" content="name" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,42 +45,33 @@
 
 <body ng-app="app">
     <div ui-view="admin" style="height:100%;"></div>
-    <div ui-view="fileUpload"></div>
-    <div ui-view="fileUpdate"></div>
-    <div ui-view="fileCheck"></div>
+    <div ui-view="payInvoce" style="height:100%;"></div>
 
     <!--Librerias de aplicación angular-->
     <script src="/angularJS/app.js"></script>
     <!--librerias de componenetes-->
     <script src="/angularJS/modules/auth.js"></script>
-    <script src="/angularJS/modules/companyFactory.js"></script>
-    <script src="/angularJS/modules/branchFactory.js"></script>
-    <script src="/angularJS/modules/orderFactory.js"></script>
-    <script src="/angularJS/modules/fileFactory.js"></script>
-    <script src="/angularJS/modules/newFactory.js"></script>
-    <script src="/angularJS/modules/filters.js"></script>
-    <script src="/angularJS/modules/userFactory.js"></script>
-    <script src="/angularJS/modules/alertFactory.js"></script>
-    <script src="/angularJS/modules/httpProvider.js"></script>
     <script src="/angularJS/modules/authInterceptor.js"></script>
+    <script src="/angularJS/modules/filters.js"></script>
+    <script src="/angularJS/modules/httpProvider.js"></script>
     <script src="/angularJS/modules/alertUtilFactory.js"></script>
     <script src="/angularJS/modules/utilsFactory.js"></script>
+    <script src="/angularJS/modules/invoceRepository.js"></script>
+    <script src="/angularJS/modules/newRepository.js"></script>
+    <script src="/angularJS/modules/userRepository.js"></script>
+    <script src="/angularJS/modules/InvoceFactory.js"></script>
 
     <!--Controllers-->
     <script src="/angularJS/pages/login/loginController.js"></script>
     <script src="/angularJS/pages/signup/signupController.js"></script>
     <script src="/angularJS/pages/admin/adminController.js"></script>
-    <script src="/angularJS/pages/admin/pOrderController.js"></script>
-    <script src="/angularJS/pages/admin/fileUploadController.js"></script>
-    <script src="/angularJS/pages/admin/fileUpdateController.js"></script>
-    <script src="/angularJS/pages/admin/fileCheckController.js"></script>
-    <script src="/angularJS/pages/admin/iPortalController.js"></script>
-    <script src="/angularJS/pages/admin/oPaidController.js"></script>
     <script src="/angularJS/pages/admin/userController.js"></script>
     <script src="/angularJS/pages/admin/newsController.js"></script>
-    <script src="/angularJS/pages/admin/fileUploadController.js"></script>
     <script src="/angularJS/pages/admin/detailNewsController.js"></script>
     <script src="/angularJS/pages/admin/validateController.js"></script>
+      <script src="/angularJS/pages/admin/payedInvoceController.js"></script>
+    <script src="/angularJS/pages/admin/pendingInvoceController.js"></script>
+    <script src="/angularJS/pages/admin/pendingInvoceModalController.js"></script>
 </body>
 
 </html>

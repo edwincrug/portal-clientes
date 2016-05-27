@@ -1,10 +1,3 @@
-// -- =============================================
-// -- Author:      Vladimir Juárez
-// -- Create date: 18/03/2016
-// -- Description: Is the container of the application
-// -- Modificó:
-// -- Fecha:
-// -- =============================================
 var app = angular.module('app', ['ui.router', 'httpHelper', 'ngCookies'])
     .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         $locationProvider.html5Mode({
@@ -33,7 +26,7 @@ var app = angular.module('app', ['ui.router', 'httpHelper', 'ngCookies'])
             })
             .state('admin', {
                 abstrac: true,
-                admin: true,
+                //  admin: true,
                 templateUrl: '/angularJS/templates/admin.html',
                 controller: 'adminController',
                 views: {
@@ -41,64 +34,49 @@ var app = angular.module('app', ['ui.router', 'httpHelper', 'ngCookies'])
                         templateUrl: '/angularJS/templates/admin.html',
                         controller: 'adminController',
                     },
-                    fileUpload: {
-                        templateUrl: '/angularJS/templates/fileUpload.html',
-                        controller: 'fileUploadController'
-                    },
-                    fileUpdate: {
-                        templateUrl: '/angularJS/templates/fileUpdate.html',
-                        controller: 'fileUpdateController'
-                    },
-                    fileCheck: {
-                        templateUrl: '/angularJS/templates/fileCheck.html',
-                        controller: 'fileCheckController'
+                    payInvoce: {
+                        templateUrl: '/angularJS/templates/pendingInvoceModal.html',
+                        controller: 'pendingInvoceModalController'
                     }
                 }
             })
             .state('admin.news', {
                 url: '/noticias',
-                admin: true,
+                //admin: true,
                 templateUrl: '/angularJS/templates/news.html',
                 controller: 'newsController'
             })
             .state('admin.detail', {
                 url: "/noticias/{id:int}",
-                admin: true,
+                //admin: true,
                 templateUrl: '/angularJS/templates/detailNew.html',
                 controller: 'detailNewsController'
             })
-            .state('admin.pOrder', {
-                url: '/ordenes-pendientes',
-                admin: true,
-                templateUrl: '/angularJS/templates/pOrder.html',
-                controller: 'pOrderController'
+            .state('admin.pendingInvoce', {
+                url: '/facturas-por-pagar',
+                templateUrl: '/angularJS/templates/pendingInvoce.html',
+                controller: 'pendingInvoceController'
             })
-            .state('admin.iPortal', {
-                url: '/ordenes-ingresadas',
-                admin: true,
-                templateUrl: '/angularJS/templates/iPortal.html',
-                controller: 'iPortalController'
-            })
-            .state('admin.oPaid', {
-                url: '/ordenes-pagadas',
-                admin: true,
-                templateUrl: '/angularJS/templates/oPaid.html',
-                controller: 'oPaidController'
+            .state('admin.payedInvoce', {
+                url: '/facturas-pagadas',
+                templateUrl: '/angularJS/templates/payedInvoce.html',
+                controller: 'payedInvoceController'
             })
             .state('admin.account', {
                 url: '/cuenta',
-                admin: true,
+                //admin: true,
                 templateUrl: '/angularJS/templates/account.html',
                 controller: 'userController'
-            }).state('activatePending', {
+            })
+            .state('activatePending', {
                 url: '/activacion-pendiente',
-                //admin: true,
                 views: {
                     admin: {
                         templateUrl: '/angularJS/templates/activatePending.html',
                     }
                 }
-            }).state('validating', {
+            })
+            .state('validating', {
                 url: '/activacionCuenta',
                 views: {
                     admin: {

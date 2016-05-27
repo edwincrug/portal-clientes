@@ -1,5 +1,5 @@
 app.controller('userController', function($scope, User, $state, AlertFactory) {
-
+/*
     User.me().then(function(user) {
         $scope.user = user.data
     })
@@ -45,5 +45,5 @@ app.controller('userController', function($scope, User, $state, AlertFactory) {
         User.logout().then(function() {
             $state.go("login")
         });
-    }
+    }*/
 })
