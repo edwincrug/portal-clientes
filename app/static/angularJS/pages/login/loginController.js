@@ -3,7 +3,8 @@ app.controller('loginController', function($scope, $state, User, AlertFactory, N
     $scope.pass = ""
     $scope.submit = function() {
         User.login($scope.rfc, $scope.pass).then(function(user) {
-            if (user.data.token) {
+            console.log(user)
+            if (user.data.data.token) {
                 User.saveToken(user.data.token);
                 New.getNews($scope.rfc).then(function(data) {
                     $scope.listNews = data.data;

@@ -37,6 +37,10 @@ var app = angular.module('app', ['ui.router', 'httpHelper', 'ngCookies'])
                     payInvoce: {
                         templateUrl: '/angularJS/templates/pendingInvoceModal.html',
                         controller: 'pendingInvoceModalController'
+                    },
+                    watchInvoce: {
+                        templateUrl: '/angularJS/templates/watchInvoceModal.html',
+                        controller: 'watchInvoceModalController'
                     }
                 }
             })

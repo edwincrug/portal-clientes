@@ -4,6 +4,8 @@ var Model = require('../dataAccess');
 var View = require('../viewPrinter');
 var Auth = require('../modules/auth');
 var invoceUtil = require('../modules/invoceUtil');
+var soap = require('soap');
+var parseString = require('xml2js').parseString;
 
 var Invoce = function(conf) {
     this.conf = conf || {};
@@ -11,6 +13,56 @@ var Invoce = function(conf) {
     this.view = new View(this.conf);
     this.response = function() {
         this[this.conf.funcionalidad](this.conf.req, this.conf.res, this.conf.next);
+    }
+}
+
+Invoce.prototype.get_pdfInvoce = function(req, res, next) {
+    var self = this;
+    var url = 'http://192.168.20.9:8095/Service1.asmx?WSDL';
+    console.log(req.query)
+    if (req.query.rfcEmisor && req.query.rfcReceptor && req.query.serie && req.query.folio) {
+        var args = {
+            RFCEMISOR: req.query.rfcEmisor,
+            RFCRECEPTOR: req.query.rfcReceptor,
+            SERIE: req.query.serie,
+            FOLIO: req.query.folio
+        };
+        soap.createClient(url, function(err, client) {
+            if (err) {
+                self.view.error(res, {
+                    mensaje: "Hubo un problema intente de nuevo",
+                });
+            } else {
+                client.MuestraFactura(args, function(err, result, raw) {
+                    if (err) {
+                        self.view.error(res, {
+                            mensaje: "Hubo un problema intente de nuevo",
+                        });
+                    } else {
+                        parseString(raw, function(err, result) {
+                            if (err) {
+                                self.view.error(res, {
+                                    mensaje: "Hubo un problema intente de nuevo",
+                                });
+                            } else {
+                                var arrayBits = result["soap:Envelope"]["soap:Body"][0]["MuestraFacturaResponse"][0]["MuestraFacturaResult"][0];
+                                self.view.ok(res, {
+                                    mensaje: "prueba",
+                                    data: {
+                                        arrayBits: arrayBits
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                });
+            }
+        });
+    } else {
+        self.view.error(res, {
+            mensaje: "Hubo un problema intente de nuevo",
+        });
     }
 }
 
@@ -29,15 +81,15 @@ Invoce.prototype.get_list = function(req, res, next) {
             });
         });
     } else {
-        return res.json({})
-            //return res.status(401).send("No autorizado");
+        self.view.error(res, {
+            mensaje: "Hubo un problema intente de nuevo",
+        });
     }
 }
 
 Invoce.prototype.get_urlReference = function(req, res, next) {
     var self = this;
     var params = [];
-
     if (req.query.idInvoce, req.query.idBank, req.query.idCompany) {
         params.push({
             name: 'idFactura',
@@ -55,8 +107,6 @@ Invoce.prototype.get_urlReference = function(req, res, next) {
             type: self.model.types.INT
         })
         this.model.query('SEL_FACTURA_DATOSPAGO_SP', params, function(error, result) {
-            console.log(error)
-            console.log(result)
             self.view.ok(res, {
                 mensaje: "prueba",
             });
@@ -74,7 +124,7 @@ Invoce.prototype.get_pdfReference = function(req, res, next) {
     if (req.query.idInvoce, req.query.idBank, req.query.idCompany) {
         params.push({
             name: 'idFactura',
-            value: req.query.ididInvoce,
+            value: req.query.idInvoce,
             type: self.model.types.INT
         })
         params.push({
@@ -93,7 +143,7 @@ Invoce.prototype.get_pdfReference = function(req, res, next) {
                     mensaje: "Hubo un problema intente de nuevo",
                 });
             } else {
-              invoceUtil.pdfGenerator(result[0],res)
+                invoceUtil.pdfGenerator(result[0], res)
             }
         });
     } else {

@@ -9,8 +9,8 @@ ViewPrinter.prototype.ok = function(res, data) {
 
 ViewPrinter.prototype.error = function(res, data) {
     data.estatus = "error"
-    data.status = data.status || 200;
-    res.status().json(data);
+    status = data.status || 200;
+    res.status(status).json(data);
 }
 
 module.exports = ViewPrinter;

@@ -17,36 +17,45 @@ var User = function(conf) {
 User.prototype.post_login = function(req, res, next) {
     var self = this;
     var params = [];
+
     if (req.body.user && req.body.pass) {
         params.push({
             name: 'user',
             value: req.body.user,
             type: self.model.types.STRING
         })
+        params.push({
+            name: 'pass',
+            value: req.body.pass,
+            type: self.model.types.STRING
+        })
         this.model.query('SEL_LOGIN_SP', params, function(error, result) {
             if (error) {
                 self.view.error(res, {
                     mensaje: "Hubo un problema en su acceso intente de nuevo",
+                      status: 401
                 });
             } else {
-                result[0].pass = result[0].pass || "";
-                bcrypt.compare(req.body.pass, result[0].pass, function(err, res) {
-                    if (res) {
+                if (result[0].length > 0) {
+                    Auth.saveUser(result[0], function(err, token) {
+                        result[0][0].token = token;
                         self.view.ok(res, {
-                            mensaje: "Registro exitoso",
-                            data: [result]
+                            mensaje: "Acceso correcto",
+                            data: result[0][0]
                         });
-                    } else {
-                        self.view.error(res, {
-                            mensaje: "RFC o contraseña invalida, intente de nuevo por favor.",
-                        });
-                    }
-                })
+                    });
+                } else {
+                    self.view.error(res, {
+                        mensaje: "RFC o contraseña invalida, intente de nuevo por favor.",
+                        status: 401
+                    });
+                }
             }
         });
     } else {
         self.view.error(res, {
             mensaje: "Hubo un problema en su acceso intente de nuevo",
+              status: 401
         });
     }
 }
@@ -55,39 +64,37 @@ User.prototype.post_signup = function(req, res, next) {
     var self = this;
     var params = [];
     if (req.body.name && req.body.rfc && req.body.email && req.body.pass) {
-        bcrypt.hash(req.body.pass, 10, function(err, hash) {
-            params.push({
-                name: 'nombre',
-                value: req.body.name,
-                type: self.model.types.STRING
-            })
-            params.push({
-                name: 'rfc',
-                value: req.body.pass,
-                type: self.model.types.STRING
-            })
-            params.push({
-                name: 'correo',
-                value: req.body.email,
-                type: self.model.types.STRING
-            })
-            params.push({
-                name: 'pass',
-                value: hash,
-                type: self.model.types.STRING
-            })
-            this.model.query('INS_USER_REGISTRO_SP', params, function(error, result) {
-                if (error) {
-                    self.view.error(res, {
-                        mensaje: "Hubo un problema con su registro intente de nuevo"
-                    });
-                } else {
-                    self.view.ok(res, {
-                        mensaje: "Registro exitoso",
-                        data: [result]
-                    });
-                }
-            });
+        params.push({
+            name: 'nombre',
+            value: req.body.name,
+            type: self.model.types.STRING
+        })
+        params.push({
+            name: 'rfc',
+            value: req.body.pass,
+            type: self.model.types.STRING
+        })
+        params.push({
+            name: 'correo',
+            value: req.body.email,
+            type: self.model.types.STRING
+        })
+        params.push({
+            name: 'pass',
+            value: hash,
+            type: self.model.types.STRING
+        })
+        this.model.query('INS_USER_REGISTRO_SP', params, function(error, result) {
+            if (error) {
+                self.view.error(res, {
+                    mensaje: "Hubo un problema con su registro intente de nuevo"
+                });
+            } else {
+                self.view.ok(res, {
+                    mensaje: "Registro exitoso",
+                    data: [result]
+                });
+            }
         });
     } else {
         self.view.error(res, {

@@ -22,18 +22,18 @@
                     </p>
                     <hr>
                     <h2>Selecciona metodo de pago</h2>
-
+                    <br>
                     <div class="row">
                         <div class="col-xs-6">
                             <div class="radio">
-                                <input ng-model="payMethod" type="radio" id="radioBank" value="1" name="radioInline">
-                                <label for="radioBank">Pasarela de pagos</label>
+                                <input ng-change="setUrl()" ng-model="payMethod" type="radio" id="radioBank" value="1" name="radioInline">
+                                <label for="radioBank">Pago en bancos</label>
                             </div>
                         </div>
                         <div class="col-xs-6">
                             <div class="radio">
-                                <input ng-model="payMethod" type="radio" id="radioReference" value="2" name="radioInline">
-                                <label for="radioReference">Referencia bancaria</label>
+                                <input ng-change="setUrl()" ng-model="payMethod" type="radio" id="radioReference" value="2" name="radioInline">
+                                <label for="radioReference">Linea de captura</label>
                             </div>
                         </div>
                     </div>
@@ -43,7 +43,8 @@
                         <h2>Selecciona banco para pagar</h2>
                         <div class="cc-selector">
                             <div ng-repeat="bank in banks">
-                                <a ng-click="getReferenceByMethod(invoce.idFactura,bank.idBanco,invoce.idEmpresa,payMethod)"  href="#" class="bank-cc {{bank.id}}"></a>
+                                <a ng-show="payMethod==1" ng-click="removeModal()" target="_blank" href="{{bank.url}}" class="bank-cc {{bank.id}}"></a>
+                                <a ng-show="payMethod==2" ng-click="removeModal()" target="_blank" href="{{'api/invoce/pdfReference/?idBank='+bank.idBanco+'&idCompany='+invoce.idEmpresa+'&idInvoce='+invoce.idFactura}}" class="bank-cc {{bank.id}}"></a>
                             </div>
                         </div>
                     </div>

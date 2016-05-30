@@ -3,7 +3,6 @@ app.factory("Utils", function($http) {
         b64toBlob: function(b64Data, contentType, sliceSize, data) {
             contentType = contentType || '';
             sliceSize = sliceSize || 512;
-            console.log(data)
             if (!data)
                 var byteCharacters = atob(b64Data);
             else

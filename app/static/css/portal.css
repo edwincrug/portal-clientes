@@ -26,13 +26,13 @@
     appearance: none;
 }
 .banamex {
-    background-image: url(/images/banamex_logo.jpg);
+    background-image: url(/images/bancos/banamex_logo.jpg);
 }
 .bancomer {
-    background-image: url(/images/bancomer_logo.jpg);
+    background-image: url(/images/bancos/bancomer_logo.jpg);
 }
 .santander {
-    background-image: url(/images/santander_logo.png);
+    background-image: url(/images/bancos/santander_logo.jpg);
 }
 .cc-selector input:active +.bank-cc {
     opacity: .9;
@@ -61,9 +61,6 @@
     -moz-filter: none;
     filter: none;
     box-shadow: 10px 10px 5px #888888;
-}
-.nav-header {
-    background: #217996;
 }
 .nav-header img {
     width: 120px;

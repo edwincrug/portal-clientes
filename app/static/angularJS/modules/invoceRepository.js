@@ -8,24 +8,33 @@ app.factory("Invoce", function($http) {
                 }
             });
         },
-        getPDFReference: function(idInvoce,idBank,idCompany) {
+        getPDFInvoce: function(rfcEmisor, rfcReceptor, serie, folio) {
+            return $http.get(url + 'pdfInvoce/', {
+                params: {
+                    rfcEmisor: rfcEmisor,
+                    rfcReceptor: rfcReceptor,
+                    serie: serie,
+                    folio: folio
+                }
+            });
+        },
+        getPDFReference: function(idInvoce, idBank, idCompany) {
             return $http.get(url + 'pdfReference/', {
                 params: {
                     idInvoce: idInvoce,
                     idBank: idBank,
-                    idCompany:idCompany
+                    idCompany: idCompany
                 }
             });
         },
-        getUrlReference: function(idInvoce,idBank,idCompany) {
+        getUrlReference: function(idInvoce, idBank, idCompany) {
             return $http.get(url + 'urlReference/', {
                 params: {
                     idInvoce: idInvoce,
                     idBank: idBank,
-                    idCompany:idCompany
+                    idCompany: idCompany
                 }
             });
         }
-
     }
 });
