@@ -13,4 +13,8 @@ ViewPrinter.prototype.error = function(res, data) {
     res.status(status).json(data);
 }
 
+ViewPrinter.prototype.see = function(res, data) {
+    res.json(data);
+}
+
 module.exports = ViewPrinter;

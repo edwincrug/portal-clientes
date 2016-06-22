@@ -1,8 +1,10 @@
 app.controller('userController', function($scope, User, $state, AlertFactory) {
-/*
+
     User.me().then(function(user) {
-        $scope.user = user.data
+        $scope.user = user.data.data
+        console.log(user.data.data)
     })
+
     $('#logoFile').change(function() {
        var formData = new FormData(document.getElementById("uploadLogo"));
         $.ajax({
@@ -13,13 +15,13 @@ app.controller('userController', function($scope, User, $state, AlertFactory) {
             processData: false,
             type: 'POST',
             success: function(data) {
-                alert(data);
+                console.log(data);
             }
         });
     });
+
     $scope.updateEmail = function() {
-        User.update($scope.user.razonSocial, $scope.user.rfc, $scope.newEmail, 1).then(function(data) {
-            console.log(data)
+        User.update($scope.user.idCliente, $scope.newEmail, 2).then(function(data) {
             data = data.data[0]
             $scope.newEmail = "";
             if (data.estatus == "ok") {
@@ -30,7 +32,7 @@ app.controller('userController', function($scope, User, $state, AlertFactory) {
         });
     }
     $scope.updatePassWord = function() {
-        User.update($scope.user.razonSocial, $scope.user.rfc, $scope.pass, 2).then(function(data) {
+        User.update( $scope.user.idCliente, $scope.pass, 1).then(function(data) {
             data = data.data[0]
             $scope.pass = $scope.passConfirm = "";
             if (data.estatus == "ok") {
@@ -45,5 +47,5 @@ app.controller('userController', function($scope, User, $state, AlertFactory) {
         User.logout().then(function() {
             $state.go("login")
         });
-    }*/
+    }
 })

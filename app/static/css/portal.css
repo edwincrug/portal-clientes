@@ -49,12 +49,6 @@
     display: inline-block;
     width: 200px;
     height: 56px;
-    -webkit-transition: all 10ms ease-in;
-    -moz-transition: all 10ms ease-in;
-    -webkit-filter: brightness(1.8) grayscale(1) opacity(.7);
-    transition: all 10ms ease-in;
-    -moz-filter: brightness(1.8) grayscale(1) opacity(.7);
-    filter: brightness(1.8) grayscale(1) opacity(.7);
 }
 .bank-cc:hover {
     -webkit-filter: none;
@@ -63,8 +57,16 @@
     box-shadow: 10px 10px 5px #888888;
 }
 .nav-header img {
-    width: 120px;
-    height: 120px;
+    max-width: 120px;
+    max-height: 120px;
+}
+img.circle-border {
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+}
+.profile-image img {
+    max-width: 96px!important;
+    max-height: 96px!important;
 }
 .radio {
     margin-left: 2em;
@@ -74,5 +76,36 @@
     width: 1.5em;
 }
 .radio >label {
-    font-size:  1.5em;
+    font-size: 1.5em;
+}
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+.nav-orders i {
+    font-size: 20px;
+}
+.color-red {
+    color: #ff0000;
+}
+.color-orange {
+    color: #ff8000;
+}
+.color-yellow {
+    color: #ffff00;
+}
+.color-green {
+    color: #00ff00;
 }

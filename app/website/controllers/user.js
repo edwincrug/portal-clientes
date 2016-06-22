@@ -1,6 +1,5 @@
 var request = require('request');
 var passport = require('passport');
-var bcrypt = require('bcrypt');
 var Model = require('../dataAccess');
 var View = require('../viewPrinter');
 var Auth = require('../modules/auth');
@@ -33,11 +32,11 @@ User.prototype.post_login = function(req, res, next) {
             if (error) {
                 self.view.error(res, {
                     mensaje: "Hubo un problema en su acceso intente de nuevo",
-                      status: 401
+                    status: 401
                 });
             } else {
                 if (result[0].length > 0) {
-                    Auth.saveUser(result[0], function(err, token) {
+                    Auth.saveUser(result[0], self.model, function(err, token) {
                         result[0][0].token = token;
                         self.view.ok(res, {
                             mensaje: "Acceso correcto",
@@ -55,7 +54,7 @@ User.prototype.post_login = function(req, res, next) {
     } else {
         self.view.error(res, {
             mensaje: "Hubo un problema en su acceso intente de nuevo",
-              status: 401
+            status: 401
         });
     }
 }
@@ -71,29 +70,37 @@ User.prototype.post_signup = function(req, res, next) {
         })
         params.push({
             name: 'rfc',
-            value: req.body.pass,
+            value: req.body.rfc,
             type: self.model.types.STRING
         })
         params.push({
-            name: 'correo',
+            name: 'correoUsuario',
             value: req.body.email,
             type: self.model.types.STRING
         })
         params.push({
-            name: 'pass',
-            value: hash,
+            name: 'contrasena',
+            value: req.body.pass,
             type: self.model.types.STRING
         })
-        this.model.query('INS_USER_REGISTRO_SP', params, function(error, result) {
+        params.push({
+            name: 'aPaterno',
+            value: '',
+            type: self.model.types.STRING
+        })
+        params.push({
+            name: 'aMaterno',
+            value: '',
+            type: self.model.types.STRING
+        })
+        this.model.query('INS_USER_SP', params, function(error, result) {
+
             if (error) {
                 self.view.error(res, {
                     mensaje: "Hubo un problema con su registro intente de nuevo"
                 });
             } else {
-                self.view.ok(res, {
-                    mensaje: "Registro exitoso",
-                    data: [result]
-                });
+                self.view.see(res, result[0]);
             }
         });
     } else {
@@ -103,73 +110,174 @@ User.prototype.post_signup = function(req, res, next) {
     }
 }
 
-
-/*request.get(this.url + "1|" + req.body.rfc + "|" + req.body.pass, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-        body = JSON.parse(body);
-        if (!body.length > 0) return res.status(401).send("No autorizado");
-        auth = new Auth(self.conf);
-        body[0].correo = decodeURIComponent(body[0].correo)
-        auth.saveUser(body[0], function(err, token) {
-            if (err) return err;
-            res.json({
-                token: token
-            });
-        })
-    } else {
-        return res.status(401).send("No autorizado");
-    }
-})*/
-
-
-/*
-User.prototype.post_salir = function(req, res, next) {
+User.prototype.get_me = function(req, res, next) {
     var self = this;
-    auth = new Auth(self.conf);
-    auth.getUser(req, res, next, function(user) {
-      if (error) {
-            return res.json({
-                response: "error"
-            })
+    Auth.getUser(req, res, next, function(error, user) {
+        if (error) {
+            self.view.error(res, {
+                status: 401,
+                mensaje: "Hubo un problema con su registro intente de nuevo",
+            });
+        } else {
+            delete user.token
+            self.view.ok(res, {
+                mensaje: "Usuario",
+                data: user
+            });
         }
-        auth.removeUser(user, function(err, data) {
-            if (err) {
-                res.json({
-                    response: "error"
-                })
-            } else {
-                res.json({
-                    response: "ok"
-                })
-            }
-
-        })
     })
 }
 
-User.prototype.post_registrar = function(req, res, next) {
+User.prototype.get_reactivate = function(req, res, next) {
+  
+}
+
+User.prototype.post_validate = function(req, res, next) {
     var self = this;
-    if (req.body.razon && req.body.email && req.body.rfc && req.body.pass) {
-        request.post({
-                url: this.url + "1",
-                form: JSON.stringify({
-                    razon: req.body.razon,
-                    rfc: req.body.rfc,
-                    email: req.body.email,
-                    password: req.body.pass
-                })
-            },
-            function(error, response, body) {
-
-                if (!error && response.statusCode == 200) {
-                    res.json(JSON.parse(body));
-
-                } else {
-                    res.json({});
-                }
-            })
+    var params = [];
+    if (req.body.rfc && req.body.token && req.body.option) {
+        params.push({
+            name: 'rfcCliente',
+            value: req.body.rfc,
+            type: self.model.types.STRING
+        })
+        params.push({
+            name: 'token',
+            value: req.body.token,
+            type: self.model.types.STRING
+        })
+        params.push({
+            name: 'opcion',
+            value: req.body.option,
+            type: self.model.types.INT
+        })
+        self.model.query('SEL_VALIDALINK_ACTIVACION_SP', params, function(error, result) {
+            if (error) {
+                self.view.error(res, {
+                    mensaje: "Error",
+                });
+            } else {
+                self.view.see(res, result[0]);
+            }
+        })
+    } else {
+        self.view.error(res, {
+            mensaje: "Error en los parametros",
+        });
     }
 }
+
+User.prototype.post_activate = function(req, res, next) {
+    var self = this;
+    var params = [];
+    if (req.body.token && req.body.rfc && req.body.option) {
+        params.push({
+            name: 'rfcCliente',
+            value: req.body.rfc,
+            type: self.model.types.STRING
+        })
+        params.push({
+            name: 'token',
+            value: req.body.token,
+            type: self.model.types.STRING
+        })
+        params.push({
+            name: 'opcion',
+            value: req.body.option,
+            type: self.model.types.INT
+        })
+        self.model.query('SEL_ACTIVACION_CUENTA_SP', params, function(error, result) {
+            if (error) {
+                self.view.error(res, {
+                    mensaje: "Error",
+                });
+            } else {
+                self.view.see(res, result[0]);
+            }
+        })
+    } else {
+        self.view.error(res, {
+            mensaje: "Error en los parametros",
+        });
+    }
+}
+
+User.prototype.post_logout = function(req, res, next) {
+    var self = this;
+    var params = [];
+    Auth.getUser(req, res, next, function(error, user) {
+        if (error) {
+            self.view.error(res, {
+                mensaje: "Error",
+            });
+        } else {
+
+            params.push({
+                name: 'idCliente',
+                value: user.idCliente,
+                type: self.model.types.STRING
+            })
+            params.push({
+                name: 'token',
+                value: "",
+                type: self.model.types.STRING
+            })
+            params.push({
+                name: 'accion',
+                value: 2,
+                type: self.model.types.INT
+            })
+            self.model.query('UPD_USER_SETTOKEN_SP', params, function(error, result) {
+                if (error) {
+                    self.view.error(res, {
+                        mensaje: "Error",
+                    });
+                } else {
+                    self.view.ok(res, {
+                        mensaje: "Ok",
+                    });
+                }
+            })
+        }
+    })
+}
+
+User.prototype.post_edit = function(req, res, next) {
+    var self = this;
+    var params = [];
+    if (req.body.idCliente && req.body.valor && req.body.tipo) {
+        params.push({
+            name: 'idCliente',
+            value: req.body.idCliente,
+            type: self.model.types.STRING
+        })
+        params.push({
+            name: 'valor',
+            value: req.body.valor,
+            type: self.model.types.STRING
+        })
+        params.push({
+            name: 'tipo',
+            value: req.body.tipo,
+            type: self.model.types.INT
+        })
+        self.model.query('UPD_USER_SP', params, function(error, result) {
+            if (error) {
+                self.view.error(res, {
+                    mensaje: "Error",
+                });
+            } else {
+                self.view.see(res, result[0]);
+            }
+        })
+    } else {
+        self.view.error(res, {
+            mensaje: "Error en los parametros",
+        });
+    }
+}
+
+/*
 
 User.prototype.post_editar = function(req, res, next) {
     var self = this;
@@ -192,61 +300,5 @@ User.prototype.post_editar = function(req, res, next) {
     }
 }
 
-User.prototype.get_me = function(req, res, next) {
-    var self = this;
-    auth = new Auth(self.conf);
-    auth.getUser(req, res, next, function(error, user) {
-      if(error) return res.status(401).send("No autorizado");
-        if(error) return res.json({});
-        delete user.token;
-        res.json(user);
-    })
-}
-
-User.prototype.post_validar = function(req, res, next) {
-    var self = this;
-    if (req.body.rfc && req.body.token && req.body.option) {
-        request.post({
-                url: this.url + "3",
-                form: JSON.stringify({
-                    token: req.body.token,
-                    rfc: req.body.rfc,
-                    opcion: req.body.option
-                })
-            },
-            function(error, response, body) {
-                body = JSON.parse(body);
-                res.json(body);
-            })
-    } else {
-        res.json({
-            estatus: "error",
-            mensaje: "Parametros incorrectos"
-        });
-
-    }
-}
-User.prototype.post_activar = function(req, res, next) {
-    var self = this;
-    if (req.body.token && req.body.rfc && req.body.option) {
-        request.post({
-                url: this.url + "4",
-                form: JSON.stringify({
-                    token: req.body.token,
-                    rfc: req.body.rfc,
-                    opcion: req.body.option
-                })
-            },
-            function(error, response, body) {
-                body = JSON.parse(body);
-                res.json(body);
-            })
-    } else {
-        res.json({
-            estatus: "error",
-            mensaje: "Parametros incorrectos"
-        });
-    }
-}
 */
 module.exports = User;

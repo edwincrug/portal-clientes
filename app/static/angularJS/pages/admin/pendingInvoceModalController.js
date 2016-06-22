@@ -1,18 +1,10 @@
-app.controller('pendingInvoceModalController', function($scope, InvoceFactory, Invoce, Utils, $window) {
-    $scope.banks = [{
-        idBanco: 4,
-        id: "banamex",
-        url: "https://www.banamex.com/es/index.htm"
-    }, {
-        idBanco: 1,
-        id: "bancomer",
-        url: "https://www.bancomer.com/index.jsp"
-    }, {
-        idBanco: 2,
-        id: "santander",
-        url: "http://www.santander.com.mx/mx/home/"
-    }];
+app.controller('pendingInvoceModalController', function($scope, $window, Bank, InvoceFactory, Invoce, Utils) {
 
+    Bank.getList().then(function(data) {
+        $scope.banks = data.data.data
+    })
+
+    $scope.content = true;
     $scope.selectedOptionBank;
 
     $('#payInvoceModal').on('show.bs.modal', function(e) {
@@ -21,10 +13,11 @@ app.controller('pendingInvoceModalController', function($scope, InvoceFactory, I
 
     })
 
-
     $('#payInvoceModal').on('hide.bs.modal', function(e) {
         $scope.payMethod = ""
         $scope.pendingInvoceModalForm.$setPristine();
+        $('.lineaCaptura').remove();
+        $scope.content = true;
     })
 
     $scope.selectedBank = function(bank) {
@@ -32,13 +25,26 @@ app.controller('pendingInvoceModalController', function($scope, InvoceFactory, I
     }
     $scope.removeModal = function() {
         $('#payInvoceModal').modal('hide')
+
     }
 
-  /*  $scope.setUrl = function() {
+    $scope.payInvoce = function(idInvoce, idBank, idCompany) {
         if ($scope.payMethod == 1) { // Banco
-            //$scope.urlRedirect =
+            Invoce.getUrlReference(idInvoce, idBank, idCompany).then(function(data) {
+                data = data.data.data
+                var x = 1000; var y = 600;
+                var urlBank = data.url + "?url_resp=" + data.url_redirect + "&convenio=" + data.convenio + "&referencia=" + data.referencia + "&importe=" + data.cantidad;
+                $window.open(urlBank, "", "width="+x+",height="+y+",top="+(screen.height-y)/2+",left="+(screen.width-x)/2+",scrollbars=NO");
+            })
         } else if ($scope.payMethod == 2) { // Referencia
-            $scope.urlRedirect = "api/invoce/pdfReference/?idBank=2&idCompany=4&idInvoce=6"
+            $scope.content = false;
+            Invoce.getPDFReference(idInvoce, idBank, idCompany).then(function(data) {
+                var pdf = URL.createObjectURL(new Blob([data.data], {
+                    type: "application/pdf"
+                }))
+                $("<object class='lineaCaptura' data='" + pdf + "' width='100%' height='520px' >").appendTo('#pdfReferenceContent');
+
+            })
         }
-    }*/
+    }
 })

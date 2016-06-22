@@ -6,6 +6,7 @@ app.controller('watchInvoceModalController', function($scope, User, Invoce, Invo
         $scope.$apply($scope.invoce)
         Invoce.getPDFInvoce($scope.invoce.rfcEmisor, $scope.invoce.rfcReceptor, $scope.invoce.serie, $scope.invoce.folio).then(function(d) {
             var pdf = URL.createObjectURL(Utils.b64toBlob(d.data.data.arrayBits, "application/pdf"))
+            console.log(pdf)
             $("<object class='filesInvoce' data='" + pdf + "' width='100%' height='500px' >").appendTo('#pdfInvoceContent');
             $scope.loadingOrder = false;
         })

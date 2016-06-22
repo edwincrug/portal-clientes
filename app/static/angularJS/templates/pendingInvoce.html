@@ -4,9 +4,9 @@
         <br>
         <div class="row">
             <div class="col-xs-12 btn-group  nav-orders" role="group">
-                <button ui-sref="admin.pOrder" class="btn btn-primary animated pulse " type="button"><i class="fa fa-square-o"></i>
+                <button ui-sref="admin.pendingInvoce" class="btn btn-primary animated pulse " type="button"><i class="fa fa-square-o"></i>
                     <br>Por pagar</button>
-                <button ui-sref="admin.iPortal" class="btn  btn-primary btn-outline " type="button"><i class="fa fa-check-square-o"></i>
+                <button ui-sref="admin.payedInvoce" class="btn  btn-primary btn-outline " type="button"><i class="fa fa-check-square-o"></i>
                     <br>Pagadas</button>
             </div>
         </div>
@@ -21,66 +21,75 @@
                 <div class="ibox-content">
 
                     <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group has-feedback">
+                        <div class="col-sm-6">
+                            <div class="form-group">
                                 <label for="pOrder.nOrder">Busqueda</label>
-                                <input ng-change="changeOrder()" ng-model="order" class="form-control" id="pOrder.nOrder">
+                                <input ng-change="changeFilter()" ng-model="filter" class="form-control" id="pOrder.nOrder">
                                 <i class=""></i>
                             </div>
                         </div>
-                        <!--div class="col-sm-4 hidden-xs">
-                            <div class="form-group">
-                                <label for="pOrder.nOrder">Empresa </label>
-                                <select ng-model="company" class="form-control" ng-change="changeCompany(company)" ng-options="o.emp_nombre for o in companyList track by o.emp_idempresa">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 hidden-xs">
-                            <div class="form-group">
-                                <label for="pOrder.nOrder">Sucursal</label>
-                                <select ng-disabled="!branchSelectVisible" ng-model="branch" class="form-control" ng-change="changeBranch(branch)" ng-options="o.suc_nombre for o in branchList track by o.suc_idsucursal">
-                                </select>
-                            </div>
-                        </div-->
                     </div>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered table-condensed ">
                             <thead>
                                 <tr>
-                                    <th>No. Factura</th>
+                                    <th>Serie</th>
+                                    <th>Folio</th>
                                     <th>Descripcion</th>
-                                    <th>Fecha de impresion</th>
+                                    <th>Departamento</th>
+                                    <th>Fecha de emisión</th>
+                                    <th>Fecha de vencimiento</th>
                                     <th>Estatus</th>
-                                    <th style="width: 110px;">Consultar</th>
-                                    <th style="width: 110px;">Pagar</th>
+                                    <th>Importe</th>
+                                    <th>Saldo</th>
+                                    <th>Consultar</th>
+                                    <th>Pagar</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="invoce in listInvoces | filter : order
+                                <tr ng-repeat="invoce in listInvoces | filter : filter
                                 | offset: currentPage*itemsPerPage | limitTo: itemsPerPage">
                                     <td>
-                                        {{invoce.noFactura}}
+                                        {{invoce.serie}}
+                                    </td>
+                                    <td>
+                                        {{invoce.folio}}
                                     </td>
                                     <td>
                                         {{invoce.descripcion}}
                                     </td>
                                     <td>
+                                        {{invoce.departamento}}
+                                    </td>
+
+                                    <td>
                                         {{invoce.fechaEmision | date:"dd/MM/yyyy"}}
                                     </td>
                                     <td>
-                                        {{invoce.estatus}}
+                                        {{invoce.fechaVencimiento | date:"dd/MM/yyyy"}}
+                                    </td>
+
+                                    <td title="{{invoce.diasCartera}}" ng-class="{ 'bg-success': invoce.diasCartera <=0 , 'bg-info': invoce.diasCartera > 0 && invoce.diasCartera <=30 , 'bg-warning': invoce.diasCartera > 30 && invoce.diasCartera <=60 , 'bg-danger': invoce.diasCartera >60  }">
+                                        <span style="cursor:pointer;">{{invoce.estatus}}</span>
+                                        <br><span ng-show="invoce.diasCartera>0">{{invoce.diasCartera}} días</span>
                                     </td>
                                     <td>
-                                        <button  data-toggle="modal" ng-click="viewInvoce(invoce)" data-target="#watchInvoceModal" title="Consultar factura" type="button" class="btn btn-block" style="width:100px;" ><i class="fa fa-search-plus"></i></button>
+                                        {{invoce.importe | currency}}
                                     </td>
                                     <td>
-                                        <button data-toggle="modal" ng-click="payInvoce(invoce)" data-target="#payInvoceModal" style="width:100px;" title="Pagar" type="button" class="btn btn-primary"><i class="fa fa-usd"></i></button>
+                                        {{invoce.saldo | currency}}
+                                    </td>
+                                    <td>
+                                        <button data-toggle="modal" ng-click="viewInvoce(invoce)" data-target="#watchInvoceModal" style="width:60px;" title="Consultar factura" type="button" class="btn btn-block" ><i class="fa fa-search-plus"></i></button>
+                                    </td>
+                                    <td>
+                                        <button data-toggle="modal" ng-click="payInvoce(invoce)" data-target="#payInvoceModal" style="width:60px;" title="Pagar" type="button" class="btn btn-primary"><i class="fa fa-usd"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <!--span>Pagina {{currentPage+1}} de {{pageCount()+1}}</span>
+                    <span>Pagina {{currentPage+1}} de {{pageCount()+1}}</span>
                     <div class="admin-pagination">
                         <ul class="pagination">
                             <li ng-class="prevPageDisabled()">
@@ -93,7 +102,7 @@
                                 <a href ng-click="nextPage()"><i class="fa fa-chevron-right"></i></a>
                             </li>
                         </ul>
-                    </div-->
+                    </div>
                 </div>
             </div>
         </div>

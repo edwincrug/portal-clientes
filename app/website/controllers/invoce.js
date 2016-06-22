@@ -14,12 +14,16 @@ var Invoce = function(conf) {
     this.response = function() {
         this[this.conf.funcionalidad](this.conf.req, this.conf.res, this.conf.next);
     }
+    this.middlewares = [
+        passport.authenticate('bearer', {
+            session: false
+        })
+    ]
 }
 
 Invoce.prototype.get_pdfInvoce = function(req, res, next) {
     var self = this;
     var url = 'http://192.168.20.9:8095/Service1.asmx?WSDL';
-    console.log(req.query)
     if (req.query.rfcEmisor && req.query.rfcReceptor && req.query.serie && req.query.folio) {
         var args = {
             RFCEMISOR: req.query.rfcEmisor,
@@ -93,8 +97,8 @@ Invoce.prototype.get_urlReference = function(req, res, next) {
     if (req.query.idInvoce, req.query.idBank, req.query.idCompany) {
         params.push({
             name: 'idFactura',
-            value: req.query.ididInvoce,
-            type: self.model.types.INT
+            value: req.query.idInvoce,
+            type: self.model.types.STRING
         })
         params.push({
             name: 'idBanco',
@@ -108,7 +112,8 @@ Invoce.prototype.get_urlReference = function(req, res, next) {
         })
         this.model.query('SEL_FACTURA_DATOSPAGO_SP', params, function(error, result) {
             self.view.ok(res, {
-                mensaje: "prueba",
+                mensaje: "Referencia",
+                data: result[0][0]
             });
         });
     } else {
@@ -125,7 +130,7 @@ Invoce.prototype.get_pdfReference = function(req, res, next) {
         params.push({
             name: 'idFactura',
             value: req.query.idInvoce,
-            type: self.model.types.INT
+            type: self.model.types.STRING
         })
         params.push({
             name: 'idBanco',
@@ -138,6 +143,7 @@ Invoce.prototype.get_pdfReference = function(req, res, next) {
             type: self.model.types.INT
         })
         this.model.query('SEL_FACTURA_DATOSPAGO_SP', params, function(error, result) {
+
             if (error) {
                 self.view.error(res, {
                     mensaje: "Hubo un problema intente de nuevo",
@@ -152,8 +158,6 @@ Invoce.prototype.get_pdfReference = function(req, res, next) {
         });
     }
 }
-
-
 
 
 /*request.get(this.url + "1|" + req.body.rfc + "|" + req.body.pass, function(error, response, body) {

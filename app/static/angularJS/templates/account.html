@@ -1,4 +1,3 @@
-
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
         <h2>Cuenta</h2>
@@ -15,15 +14,17 @@
                 <div>
                     <div class="ibox-content profile-content">
                         <div class="text-center profile-image">
-                            <img src="images/logo.png" class="img-circle circle-border m-b-md" alt="profile">
+                            <img src="images/profile/{{user.imagen}}" class="img-circle circle-border m-b-md" alt="profile">
                         </div>
-                        <h3>{{user.razonSocial}}</h3>
-                        <h4><strong>RFC:</strong> {{user.rfc}}</h4>
-                        <form method="POST"  id="uploadLogo" class="user-button">
+                        <h3>{{user.nombreCliente}}</h3>
+                        <h4><strong>RFC:</strong> {{user.rfcCliente}}</h4>
+                        <form method="POST" id="uploadLogo" class="user-button">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="fileUpload btn btn-sm btn-primary">
                                         <span>Subir logo</span>
+                                        <input type="hidden" name="rfc" value="{{user.rfcCliente}}">
+                                        <input type="hidden" name="idCliente" value="{{user.idCliente}}">
                                         <input id="logoFile" type="file" name="file[]" class="upload" />
                                     </div>
                                 </div>

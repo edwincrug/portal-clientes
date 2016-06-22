@@ -1,11 +1,9 @@
 app.controller('adminController', function($scope, $state, User) {
-  $scope.razonSocial = "Oscar Paredes";
-  $scope.rfc = "PAGO120891AB9";
-    /*User.me().then(function(user) {
-        $scope.razonSocial = user.data.razonSocial;
-        $scope.rfc = user.data.rfc;
 
-        Alert.getAlerts(user.data.rfc).then(function(alerts) {
+  User.me().then(function(user) {
+        $scope.user = user.data.data;
+
+      /*  Alert.getAlerts(user.data.rfc).then(function(alerts) {
             for (var i in alerts.data) {
                 if (alerts.data[i].idTipo == 1) {
                     $scope.alertNewOrder = alerts.data[i];
@@ -13,9 +11,10 @@ app.controller('adminController', function($scope, $state, User) {
                     $scope.alertNews = alerts.data[i];
                 }
             }
-        })
+        })*/
 
     })
+/*
     $scope.viewAlert = function(rfc, idAlerta) {
         console.log(idAlerta)
         Alert.viewAlerts(rfc, idAlerta).then(function(data) {
@@ -30,13 +29,13 @@ app.controller('adminController', function($scope, $state, User) {
         })
 
     }
+    */
 
     $scope.logout = function() {
         User.logout().then(function() {
             $state.go("login");
         });
     }
-    */
 
     $(document).ready(function() {
         // Add body-small class if window less than 768px
@@ -244,6 +243,7 @@ app.controller('adminController', function($scope, $state, User) {
                 $(".footer").addClass('fixed');
             }
         }
+        $("body").toggleClass("mini-navbar");
     });
 
 

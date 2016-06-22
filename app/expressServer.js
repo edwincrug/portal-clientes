@@ -2,7 +2,9 @@ var env = process.env.NODE_ENV || 'production',
     express = require('express'),
     swig = require('swig'),
     middlewares = require('./middlewares/admin'),
-    router = require('./website/router');
+    router = require('./website/router'),
+    auth = require('./website/modules/auth');
+
 
 
 //Alta de opciones
@@ -10,6 +12,7 @@ var done = false;
 
 var ExpressServer = function(config) {
     this.config = config || {};
+    auth.init();
     this.expressServer = express();
 
     // middlewares

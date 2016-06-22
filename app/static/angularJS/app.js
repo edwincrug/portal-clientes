@@ -24,9 +24,36 @@ var app = angular.module('app', ['ui.router', 'httpHelper', 'ngCookies'])
                 }
 
             })
+            .state('activatePending', {
+                url: '/activacion-pendiente',
+                views: {
+                    admin: {
+                        templateUrl: '/angularJS/templates/activatePending.html',
+                        controller: 'activatePendingController'
+                    }
+                }
+            })
+            .state('validating', {
+                url: '/activacionCuenta',
+                views: {
+                    admin: {
+                        templateUrl: '/angularJS/templates/validate.html',
+                        controller: 'validateController'
+                    }
+                }
+            })
+            .state('payDone', {
+                url: '/pago-realizado',
+                views: {
+                    admin: {
+                        templateUrl: '/angularJS/templates/payDone.html',
+                        controller: 'payDoneController'
+                    }
+                }
+            })
             .state('admin', {
                 abstrac: true,
-                //  admin: true,
+               params: { data: null },
                 templateUrl: '/angularJS/templates/admin.html',
                 controller: 'adminController',
                 views: {
@@ -46,17 +73,18 @@ var app = angular.module('app', ['ui.router', 'httpHelper', 'ngCookies'])
             })
             .state('admin.news', {
                 url: '/noticias',
-                //admin: true,
+                admin: true,
                 templateUrl: '/angularJS/templates/news.html',
                 controller: 'newsController'
             })
             .state('admin.detail', {
                 url: "/noticias/{id:int}",
-                //admin: true,
+                admin: true,
                 templateUrl: '/angularJS/templates/detailNew.html',
                 controller: 'detailNewsController'
             })
             .state('admin.pendingInvoce', {
+                admin: true,
                 url: '/facturas-por-pagar',
                 templateUrl: '/angularJS/templates/pendingInvoce.html',
                 controller: 'pendingInvoceController'
@@ -72,23 +100,7 @@ var app = angular.module('app', ['ui.router', 'httpHelper', 'ngCookies'])
                 templateUrl: '/angularJS/templates/account.html',
                 controller: 'userController'
             })
-            .state('activatePending', {
-                url: '/activacion-pendiente',
-                views: {
-                    admin: {
-                        templateUrl: '/angularJS/templates/activatePending.html',
-                    }
-                }
-            })
-            .state('validating', {
-                url: '/activacionCuenta',
-                views: {
-                    admin: {
-                        templateUrl: '/angularJS/templates/validate.html',
-                        controller: 'validateController'
-                    }
-                }
-            })
+
         $urlRouterProvider.otherwise('/');
     });
 

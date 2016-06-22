@@ -3,17 +3,13 @@ app.run(function($rootScope, User, $state) {
         function(event, toState, toParams, fromState, fromParams, options) {
             if (toState.admin) {
                 User.me().then(function(data) {
-                    if (data.data.pprov_usersStatus == 2) {
-                        event.preventDefault();
+                    if (data.data.data.idEstatus == 2) {
                         $state.go('activatePending')
                     } else {
-                        $state.go(toState.name, {
-                            data: data.data
-                        })
+                        $state.go(toState.name)
                     }
 
                 }, function(err) {
-                    event.preventDefault();
                     $state.go('login')
                 })
             }

@@ -20,6 +20,7 @@ app.factory("Invoce", function($http) {
         },
         getPDFReference: function(idInvoce, idBank, idCompany) {
             return $http.get(url + 'pdfReference/', {
+                responseType: 'arraybuffer',
                 params: {
                     idInvoce: idInvoce,
                     idBank: idBank,

@@ -4,11 +4,11 @@
             <ul class="nav metismenu" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element"> <span>
-                        <img alt="image" class="img-circle circle-border m-b-md" src="images/perfil.png"/>
+                        <img alt="image" class="img-circle circle-border m-b-md" src="images/profile/{{user.imagen}}"/>
                          </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{razonSocial}}</strong>
-                         </span> <span class="text-xs block">{{rfc}} <b class="caret"></b></span> </span>
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{user.nombreCliente}}</strong>
+                         </span> <span class="text-xs block">{{user.rfcCliente}} <b class="caret"></b></span> </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a href="cuenta">Cuenta</a></li>
