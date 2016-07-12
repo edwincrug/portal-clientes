@@ -116,7 +116,7 @@ User.prototype.get_me = function(req, res, next) {
         if (error) {
             self.view.error(res, {
                 status: 401,
-                mensaje: "Hubo un problema con su registro intente de nuevo",
+                mensaje: "Hubo un problema con su sesion",
             });
         } else {
             delete user.token
@@ -129,7 +129,7 @@ User.prototype.get_me = function(req, res, next) {
 }
 
 User.prototype.get_reactivate = function(req, res, next) {
-  
+
 }
 
 User.prototype.post_validate = function(req, res, next) {

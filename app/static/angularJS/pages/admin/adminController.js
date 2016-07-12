@@ -243,7 +243,7 @@ app.controller('adminController', function($scope, $state, User) {
                 $(".footer").addClass('fixed');
             }
         }
-        $("body").toggleClass("mini-navbar");
+      //  $("body").toggleClass("mini-navbar");
     });
 
 

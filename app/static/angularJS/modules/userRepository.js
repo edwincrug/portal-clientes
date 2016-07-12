@@ -16,7 +16,7 @@ app.factory("User", function($http, $cookies) {
             });
         },
         saveToken: function(token) {
-            $cookies.put('andrade-token', token);
+            $cookies.put('andrade-token-client', token);
         },
         me: function() {
             return $http.get(url + 'me/');
@@ -53,9 +53,4 @@ app.factory("User", function($http, $cookies) {
 
     }
 
-
-    /*,
-
-
-          */
 });
