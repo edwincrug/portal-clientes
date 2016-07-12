@@ -21,11 +21,25 @@
                 <div class="ibox-content">
 
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="pOrder.nOrder">Busqueda</label>
-                                <input ng-change="changeFilter()" ng-model="filter" class="form-control" id="pOrder.nOrder">
+                                <input ng-change="changeFilter()" ng-model="filterText" class="form-control" id="pOrder.nOrder">
                                 <i class=""></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 hidden-xs">
+                            <div class="form-group">
+                                <label for="pOrder.nOrder">Empresa </label>
+                                <select ng-model="company" class="form-control" ng-change="changeCompany(company)" ng-options="o.empresa for o in companyList track by o.idEmpresa">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 hidden-xs">
+                            <div class="form-group">
+                                <label for="pOrder.nOrder">Sucursal</label>
+                                <select ng-disabled="!branchSelectVisible" ng-model="branch" class="form-control" ng-change="changeBranch(branch)" ng-options="o.sucursal for o in branchListTemp track by o.idSucursal">
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -47,8 +61,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="invoce in listInvoces | filter : filter
-                                | offset: currentPage*itemsPerPage | limitTo: itemsPerPage">
+                                <tr ng-repeat="invoce in listInvoces | company : company | branch:branch
+                                | filter : filterText | offset: currentPage*itemsPerPage | limitTo: itemsPerPage">
                                     <td>
                                         {{invoce.serie}}
                                     </td>

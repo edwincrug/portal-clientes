@@ -7,9 +7,9 @@ app.filter('offset', function() {
 
 app.filter('company', function() {
   return function(input, company) {
-    if (company && company.emp_idempresa != 0) {
+    if (company && company.idEmpresa != 0) {
       return input.filter(function(e) {
-        return e.emp_idempresa === company.emp_idempresa;
+        return e.idEmpresa === company.idEmpresa;
       });
     } else {
       return input;
@@ -19,9 +19,9 @@ app.filter('company', function() {
 
 app.filter('branch', function() {
   return function(input, branch) {
-    if (branch && branch.suc_idsucursal != 0) {
+    if (branch && branch.idSucursal != 0) {
       return input.filter(function(e) {
-        return e.suc_idsucursal === branch.suc_idsucursal;
+        return e.idSucursal === branch.idSucursal;
       });
     } else {
       return input;

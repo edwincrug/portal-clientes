@@ -28,20 +28,20 @@
                                 <i class=""></i>
                             </div>
                         </div>
-                        <!--div class="col-sm-4 hidden-xs">
+                        <div class="col-sm-4 hidden-xs">
                             <div class="form-group">
                                 <label for="pOrder.nOrder">Empresa </label>
-                                <select ng-model="company" class="form-control" ng-change="changeCompany(company)" ng-options="o.emp_nombre for o in companyList track by o.emp_idempresa">
+                                <select ng-model="company" class="form-control" ng-change="changeCompany(company)" ng-options="o.empresa for o in companyList track by o.idEmpresa">
                                 </select>
                             </div>
                         </div>
                         <div class="col-sm-4 hidden-xs">
                             <div class="form-group">
                                 <label for="pOrder.nOrder">Sucursal</label>
-                                <select ng-disabled="!branchSelectVisible" ng-model="branch" class="form-control" ng-change="changeBranch(branch)" ng-options="o.suc_nombre for o in branchList track by o.suc_idsucursal">
+                                <select ng-disabled="!branchSelectVisible" ng-model="branch" class="form-control" ng-change="changeBranch(branch)" ng-options="o.sucursal for o in branchList track by o.idSucursal">
                                 </select>
                             </div>
-                        </div-->
+                        </div>
                     </div>
                     <!--div class="table-responsive">
                         <table class="table table-striped table-bordered table-condensed ">
