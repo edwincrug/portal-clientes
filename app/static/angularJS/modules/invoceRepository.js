@@ -18,22 +18,30 @@ app.factory("Invoce", function($http) {
                 }
             });
         },
-        getPDFReference: function(idInvoce, idBank, idCompany) {
+        getPDFReference: function(idInvoce, idBank, idCompany,serie,folio,tipo,idCliente ) {
             return $http.get(url + 'pdfReference/', {
                 responseType: 'arraybuffer',
                 params: {
                     idInvoce: idInvoce,
                     idBank: idBank,
-                    idCompany: idCompany
+                    idCompany: idCompany,
+                    serie:serie,
+                    folio:folio,
+                    tipo:tipo,
+                    idCliente:idCliente
                 }
             });
         },
-        getUrlReference: function(idInvoce, idBank, idCompany) {
+        getUrlReference: function(idInvoce, idBank, idCompany,serie,folio,tipo,idCliente) {
             return $http.get(url + 'urlReference/', {
                 params: {
                     idInvoce: idInvoce,
                     idBank: idBank,
-                    idCompany: idCompany
+                    idCompany: idCompany,
+                    serie:serie,
+                    folio:folio,
+                    tipo:tipo,
+                    idCliente:idCliente
                 }
             });
         }

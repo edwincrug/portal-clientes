@@ -8,173 +8,175 @@ var soap = require('soap');
 var parseString = require('xml2js').parseString;
 
 var Invoce = function(conf) {
-    this.conf = conf || {};
-    this.model = new Model(this.conf);
-    this.view = new View(this.conf);
-    this.response = function() {
-        this[this.conf.funcionalidad](this.conf.req, this.conf.res, this.conf.next);
-    }
-    this.middlewares = [
-        passport.authenticate('bearer', {
-            session: false
-        })
-    ]
+  this.conf = conf || {};
+  this.model = new Model(this.conf);
+  this.view = new View(this.conf);
+  this.response = function() {
+    this[this.conf.funcionalidad](this.conf.req, this.conf.res, this.conf.next);
+  }
+  this.middlewares = [
+    passport.authenticate('bearer', {
+      session: false
+    })
+  ]
 }
 
 Invoce.prototype.get_pdfInvoce = function(req, res, next) {
-    var self = this;
-    var url = 'http://192.168.20.9:8095/Service1.asmx?WSDL';
-    if (req.query.rfcEmisor && req.query.rfcReceptor && req.query.serie && req.query.folio) {
-        var args = {
-            RFCEMISOR: req.query.rfcEmisor,
-            RFCRECEPTOR: req.query.rfcReceptor,
-            SERIE: req.query.serie,
-            FOLIO: req.query.folio
-        };
-        soap.createClient(url, function(err, client) {
-            if (err) {
-                self.view.error(res, {
-                    mensaje: "Hubo un problema intente de nuevo",
-                });
-            } else {
-                client.MuestraFactura(args, function(err, result, raw) {
-                    if (err) {
-                        self.view.error(res, {
-                            mensaje: "Hubo un problema intente de nuevo",
-                        });
-                    } else {
-                        parseString(raw, function(err, result) {
-                            if (err) {
-                                self.view.error(res, {
-                                    mensaje: "Hubo un problema intente de nuevo",
-                                });
-                            } else {
-                                var arrayBits = result["soap:Envelope"]["soap:Body"][0]["MuestraFacturaResponse"][0]["MuestraFacturaResult"][0];
-                                self.view.ok(res, {
-                                    mensaje: "prueba",
-                                    data: {
-                                        arrayBits: arrayBits
-                                    }
-                                });
-                            }
-                        });
-                    }
-
-                });
-            }
-        });
-    } else {
+  var self = this;
+  var url = this.conf.parameters.WSInvoce;
+  if (req.query.rfcEmisor && req.query.rfcReceptor && req.query.serie && req.query.folio) {
+    var args = {
+      RFCEMISOR: req.query.rfcEmisor,
+      RFCRECEPTOR: req.query.rfcReceptor,
+      SERIE: req.query.serie,
+      FOLIO: req.query.folio
+    };
+    soap.createClient(url, function(err, client) {
+      if (err) {
         self.view.error(res, {
-            mensaje: "Hubo un problema intente de nuevo",
+          mensaje: "Hubo un problema intente de nuevo",
         });
-    }
+      } else {
+        client.MuestraFactura(args, function(err, result, raw) {
+          if (err) {
+            self.view.error(res, {
+              mensaje: "Hubo un problema intente de nuevo",
+            });
+          } else {
+            parseString(raw, function(err, result) {
+              if (err) {
+                self.view.error(res, {
+                  mensaje: "Hubo un problema intente de nuevo",
+                });
+              } else {
+                var arrayBits = result["soap:Envelope"]["soap:Body"][0]["MuestraFacturaResponse"][0]["MuestraFacturaResult"][0]["pdf"][0];
+                var mensaje = result["soap:Envelope"]["soap:Body"][0]["MuestraFacturaResponse"][0]["MuestraFacturaResult"][0]["mensajeresultado"][0];
+                self.view.ok(res, {
+                  mensaje: mensaje,
+                  data: {
+                    arrayBits: arrayBits
+                  }
+                });
+              }
+            });
+          }
+
+        });
+      }
+    });
+  } else {
+    self.view.error(res, {
+      mensaje: "Hubo un problema intente de nuevo",
+    });
+  }
 }
 
 Invoce.prototype.get_list = function(req, res, next) {
-    var self = this;
-    var params = [];
-    if (req.query.idUser) {
-        params.push({
-            name: 'idCliente',
-            value: req.query.idUser,
-            type: self.model.types.INT
-        })
-        this.model.query('SEL_FACTURAS_PORPAGAR_SP', params, function(error, result) {
-            self.view.ok(res, {
-                data: result[0]
-            });
-        });
-    } else {
-        self.view.error(res, {
-            mensaje: "Hubo un problema intente de nuevo",
-        });
-    }
+  var self = this;
+  var params = [];
+  if (req.query.idUser) {
+    params.push({
+      name: 'idCliente',
+      value: req.query.idUser,
+      type: self.model.types.INT
+    })
+    this.model.query('SEL_FACTURAS_PORPAGAR_SP', params, function(error, result) {
+      self.view.ok(res, {
+        data: result[0]
+      });
+    });
+  } else {
+    self.view.error(res, {
+      mensaje: "Hubo un problema intente de nuevo",
+    });
+  }
 }
 
 Invoce.prototype.get_urlReference = function(req, res, next) {
-    var self = this;
-    var params = [];
-    if (req.query.idInvoce, req.query.idBank, req.query.idCompany) {
-        params.push({
-            name: 'idFactura',
-            value: req.query.idInvoce,
-            type: self.model.types.STRING
-        })
-        params.push({
-            name: 'idBanco',
-            value: req.query.idBank,
-            type: self.model.types.INT
-        })
-        params.push({
-            name: 'idEmpresa',
-            value: req.query.idCompany,
-            type: self.model.types.INT
-        })
-        this.model.query('SEL_FACTURA_DATOSPAGO_SP', params, function(error, result) {
-            self.view.ok(res, {
-                mensaje: "Referencia",
-                data: result[0][0]
-            });
+  var self = this;
+  var params = [];
+  if (req.query.idInvoce, req.query.idBank, req.query.idCompany) {
+    params.push({
+      name: 'idFactura',
+      value: req.query.idInvoce,
+      type: self.model.types.STRING
+    })
+    params.push({
+      name: 'idBanco',
+      value: req.query.idBank,
+      type: self.model.types.INT
+    })
+    params.push({
+      name: 'idEmpresa',
+      value: req.query.idCompany,
+      type: self.model.types.INT
+    })
+    getReferenceFromWS(this.conf.parameters.WSReference, req.query.serie, req.query.folio, req.query.tipo, req.query.idCliente, function(err, data) {
+      this.model.query('SEL_FACTURA_DATOSPAGO_SP', params, function(error, result) {
+        result[0][0].referencia = data.REFERENCIA;
+        self.view.ok(res, {
+          mensaje: "Referencia",
+          data: result[0][0]
         });
-    } else {
-        self.view.error(res, {
-            mensaje: "Hubo un problema intente de nuevo",
-        });
-    }
+      });
+    })
+
+  } else {
+    self.view.error(res, {
+      mensaje: "Hubo un problema intente de nuevo",
+    });
+  }
 }
 
 Invoce.prototype.get_pdfReference = function(req, res, next) {
-    var self = this;
-    var params = [];
-    if (req.query.idInvoce, req.query.idBank, req.query.idCompany) {
-        params.push({
-            name: 'idFactura',
-            value: req.query.idInvoce,
-            type: self.model.types.STRING
-        })
-        params.push({
-            name: 'idBanco',
-            value: req.query.idBank,
-            type: self.model.types.INT
-        })
-        params.push({
-            name: 'idEmpresa',
-            value: req.query.idCompany,
-            type: self.model.types.INT
-        })
-        this.model.query('SEL_FACTURA_DATOSPAGO_SP', params, function(error, result) {
-
-            if (error) {
-                self.view.error(res, {
-                    mensaje: "Hubo un problema intente de nuevo",
-                });
-            } else {
-                invoceUtil.pdfGenerator(result[0], res)
-            }
-        });
-    } else {
-        self.view.error(res, {
+  var self = this;
+  var params = [];
+  if (req.query.idInvoce, req.query.idBank, req.query.idCompany) {
+    params.push({
+      name: 'idFactura',
+      value: req.query.idInvoce,
+      type: self.model.types.STRING
+    })
+    params.push({
+      name: 'idBanco',
+      value: req.query.idBank,
+      type: self.model.types.INT
+    })
+    params.push({
+      name: 'idEmpresa',
+      value: req.query.idCompany,
+      type: self.model.types.INT
+    })
+    getReferenceFromWS(this.conf.parameters.WSReference, req.query.serie, req.query.folio, req.query.tipo, req.query.idCliente, function(err, data) {
+      this.model.query('SEL_FACTURA_DATOSPAGO_SP', params, function(error, result) {
+        result[0][0].referencia = data.REFERENCIA;
+        if (error) {
+          self.view.error(res, {
             mensaje: "Hubo un problema intente de nuevo",
-        });
-    }
+          });
+        } else {
+          invoceUtil.pdfGenerator(result[0], res)
+        }
+      });
+    });
+
+  } else {
+    self.view.error(res, {
+      mensaje: "Hubo un problema intente de nuevo",
+    });
+  }
 }
 
-
-/*request.get(this.url + "1|" + req.body.rfc + "|" + req.body.pass, function(error, response, body) {
+function getReferenceFromWS(url, serie, folio, tipo, idCliente, cb) {
+  request.get(url + "?serie=" + serie + "&folio=" + folio + "&tipo=" + tipo + "&idCliente=" + idCliente, function(error, response, body) {
     if (!error && response.statusCode == 200) {
-        body = JSON.parse(body);
-        if (!body.length > 0) return res.status(401).send("No autorizado");
-        auth = new Auth(self.conf);
-        body[0].correo = decodeURIComponent(body[0].correo)
-        auth.saveInvoce(body[0], function(err, token) {
-            if (err) return err;
-            res.json({
-                token: token
-            });
-        })
+      body = JSON.parse(body);
+      console.log(body)
+      cb(null, body);
     } else {
-        return res.status(401).send("No autorizado");
+      cb(error)
     }
-})*/
+  })
+}
 
 module.exports = Invoce;
