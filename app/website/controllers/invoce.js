@@ -92,6 +92,29 @@ Invoce.prototype.get_list = function(req, res, next) {
   }
 }
 
+Invoce.prototype.get_listPayed = function(req, res, next) {
+  var self = this;
+  var params = [];
+  if (req.query.idUser) {
+    params.push({
+      name: 'idCliente',
+      value: req.query.idUser,
+      type: self.model.types.INT
+    })
+    this.model.query('SEL_FACTURAS_PAGADAS_SP', params, function(error, result) {
+      self.view.ok(res, {
+        data: result[0]
+      });
+    });
+  } else {
+    self.view.error(res, {
+      mensaje: "Hubo un problema intente de nuevo",
+    });
+  }
+}
+
+
+
 Invoce.prototype.get_urlReference = function(req, res, next) {
   var self = this;
   var params = [];

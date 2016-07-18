@@ -8,6 +8,13 @@ app.factory("Invoce", function($http) {
                 }
             });
         },
+        getPayedByIdUser: function(idUser) {
+            return $http.get(url + 'listPayed/', {
+                params: {
+                    idUser: idUser
+                }
+            });
+        },
         getPDFInvoce: function(rfcEmisor, rfcReceptor, serie, folio) {
             return $http.get(url + 'pdfInvoce/', {
                 params: {

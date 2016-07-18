@@ -15,7 +15,8 @@ app.controller('userController', function($scope, User, $state, AlertFactory) {
             processData: false,
             type: 'POST',
             success: function(data) {
-                console.log(data);
+              AlertFactory.success(data.mensaje);
+              $("#urlImagePerfil").attr("src","images/profile/"+$scope.user.imagen+"?d="+ new Date().getTime());
             }
         });
     });

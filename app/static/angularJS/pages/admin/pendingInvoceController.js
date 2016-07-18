@@ -1,8 +1,6 @@
 app.controller('pendingInvoceController', function($scope, $filter, User, Invoce, InvoceFactory) {
   $scope.listInvoces = [];
   $scope.selectedOptionBank;
-  $scope.itemsPerPage = 5;
-  $scope.currentPage = 0;
   $scope.companyList = [{
     idEmpresa: 0,
     empresa: "--- Selecciona ---"
@@ -12,7 +10,7 @@ app.controller('pendingInvoceController', function($scope, $filter, User, Invoce
     sucursal: "--- Selecciona ---"
   }];
 
-
+  //Carga de datos inicial.
   User.me().then(function(user) {
     $scope.user = user.data.data
     Invoce.getByIdUser($scope.user.idCliente).then(function(r) {
@@ -48,6 +46,155 @@ app.controller('pendingInvoceController', function($scope, $filter, User, Invoce
 
   })
 
+  //Order
+  $scope.orderSerie = "";
+  $scope.orderFolio = "";
+  $scope.orderDesc = "";
+  $scope.orderDep = "";
+  $scope.orderFecEmi = "";
+  $scope.orderFecVen = "";
+  $scope.orderEstatus = "";
+  $scope.orderImporte = "";
+  $scope.orderSaldo = "";
+
+
+  $scope.changeOrderSerie = function() {
+    if ($scope.orderSerie == "") {
+      $scope.orderSerie = "asc";
+    } else if ($scope.orderSerie == "asc") {
+      $scope.orderSerie = "desc";
+    } else if ($scope.orderSerie == "desc") {
+      $scope.orderSerie = "asc";
+    }
+    orderArrayList("serie", $scope.orderSerie, false, true)
+  }
+
+  $scope.changeOrderFolio = function() {
+    if ($scope.orderFolio == "") {
+      $scope.orderFolio = "asc";
+    } else if ($scope.orderFolio == "asc") {
+      $scope.orderFolio = "desc";
+    } else if ($scope.orderFolio == "desc") {
+      $scope.orderFolio = "asc";
+    }
+    orderArrayList("folio", $scope.orderFolio, false, true)
+  }
+
+  $scope.changeOrderDesc = function() {
+    if ($scope.orderDesc == "") {
+      $scope.orderDesc = "asc";
+    } else if ($scope.orderDesc == "asc") {
+      $scope.orderDesc = "desc";
+    } else if ($scope.orderDesc == "desc") {
+      $scope.orderDesc = "asc";
+    }
+    orderArrayList("descripcion", $scope.orderDesc, false, true)
+  }
+
+  $scope.changeOrderDep = function() {
+    if ($scope.orderDep == "") {
+      $scope.orderDep = "asc";
+    } else if ($scope.orderDep == "asc") {
+      $scope.orderDep = "desc";
+    } else if ($scope.orderDep == "desc") {
+      $scope.orderDep = "asc";
+    }
+    orderArrayList("departamento", $scope.orderDep, false, true)
+  }
+
+  $scope.changeOrderFecEmi = function() {
+    if ($scope.orderFecEmi == "") {
+      $scope.orderFecEmi = "asc";
+    } else if ($scope.orderFecEmi == "asc") {
+      $scope.orderFecEmi = "desc";
+    } else if ($scope.orderFecEmi == "desc") {
+      $scope.orderFecEmi = "asc";
+    }
+    orderArrayList("fechaEmision", $scope.orderFecEmi, true, false)
+  }
+
+  $scope.changeOrderFecVen = function() {
+    if ($scope.orderFecVen == "") {
+      $scope.orderFecVen = "asc";
+    } else if ($scope.orderFecVen == "asc") {
+      $scope.orderFecVen = "desc";
+    } else if ($scope.orderFecVen == "desc") {
+      $scope.orderFecVen = "asc";
+    }
+    orderArrayList("fechaVencimiento", $scope.orderFecVen, true, false)
+  }
+
+  $scope.changeOrderEstatus = function() {
+    if ($scope.orderEstatus == "") {
+      $scope.orderEstatus = "asc";
+    } else if ($scope.orderEstatus == "asc") {
+      $scope.orderEstatus = "desc";
+    } else if ($scope.orderEstatus == "desc") {
+      $scope.orderEstatus = "asc";
+    }
+    orderArrayList("diasCartera", $scope.orderEstatus, false, false)
+  }
+
+  $scope.changeOrderImporte = function() {
+    if ($scope.orderImporte == "") {
+      $scope.orderImporte = "asc";
+    } else if ($scope.orderImporte == "asc") {
+      $scope.orderImporte = "desc";
+    } else if ($scope.orderImporte == "desc") {
+      $scope.orderImporte = "asc";
+    }
+    orderArrayList("importe", $scope.orderImporte, false, false)
+  }
+
+  $scope.changeOrderSaldo = function() {
+    if ($scope.orderSaldo == "") {
+      $scope.orderSaldo = "asc";
+    } else if ($scope.orderSaldo == "asc") {
+      $scope.orderSaldo = "desc";
+    } else if ($scope.orderSaldo == "desc") {
+      $scope.orderSaldo = "asc";
+    }
+  }
+  orderArrayList("saldo", $scope.orderSaldo, false, false)
+
+  function orderArrayList(field, order, date, string) {
+    $scope.listInvoces.sort(function(a, b) {
+      if (date) {
+        //tempDate = a[field].split("/")
+        a[field] = new Date(a[field]).getTime();
+        b[field] = new Date(b[field]).getTime();
+      }
+      if (string) {
+        var x = "",
+          y = "";
+        if (Array.isArray(field)) {
+          x = field.reduce(function(ant, sig) {
+            return ant + " " + a[sig];
+          }, "")
+          y = field.reduce(function(ant, sig) {
+            return ant + " " + b[sig];
+          }, "")
+        } else {
+          x = a[field]
+          y = b[field]
+        }
+        if (order == "asc") {
+          return x > y ? -1 : 1
+        } else if (order == "desc") {
+          return y > x ? -1 : 1
+        }
+      } else {
+        if (order == "asc") {
+          return a[field] - b[field]
+        } else if (order == "desc") {
+          return b[field] - a[field]
+        }
+      }
+
+    })
+  }
+
+  //Filtros
   function filterApply() {
     totalElements = $filter('filter')($filter('branch')(($filter('company')($scope.listInvoces, $scope.company)), $scope.branch), $scope.filterText).length;
     $scope.currentPage = 0;
@@ -57,7 +204,7 @@ app.controller('pendingInvoceController', function($scope, $filter, User, Invoce
     if (company.idEmpresa != 0) {
       $scope.branchSelectVisible = true;
       $scope.branchListTemp = $scope.branchList.filter(function(d) {
-        if (company.idEmpresa === d.idEmpresa || d.idSucursal===0) return true
+        if (company.idEmpresa === d.idEmpresa || d.idSucursal === 0) return true
       })
       $scope.branch = $scope.branchListTemp[0];
       filterApply()
@@ -69,10 +216,8 @@ app.controller('pendingInvoceController', function($scope, $filter, User, Invoce
   }
 
   $scope.changeBranch = function(branch) {
-      filterApply();
+    filterApply();
   }
-
-
 
   $scope.changeFilter = function() {
     filterApply()
@@ -86,8 +231,11 @@ app.controller('pendingInvoceController', function($scope, $filter, User, Invoce
     InvoceFactory.setInvoce(invoce);
   }
 
-  var totalElements;
   //Pagination
+  $scope.itemsPerPage = 5;
+  $scope.currentPage = 0;
+  var totalElements;
+
   $scope.range = function() {
     var rangeSize = 5;
     var ret = [];
