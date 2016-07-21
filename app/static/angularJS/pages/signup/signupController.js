@@ -19,6 +19,7 @@ app.controller('signupController', function($scope, User, AlertFactory, $state) 
 
     var password = document.getElementById("pass"),
         confirm_password = document.getElementById("passConfirm");
+        document.getElementById("checkAviso").setCustomValidity("Selecciona para aceptar terminos y condiciones")
 
     function validatePassword() {
         if (password.value != confirm_password.value) {
