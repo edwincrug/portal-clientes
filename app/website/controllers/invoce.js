@@ -5,6 +5,7 @@ var View = require('../viewPrinter');
 var Auth = require('../modules/auth');
 var invoceUtil = require('../modules/invoceUtil');
 var soap = require('soap');
+var CryptoJS = require("crypto-js")
 var parseString = require('xml2js').parseString;
 
 var Invoce = function(conf) {
@@ -137,6 +138,11 @@ Invoce.prototype.get_urlReference = function(req, res, next) {
     getReferenceFromWS(this.conf.parameters.WSReference, req.query.serie, req.query.folio, req.query.tipo, req.query.idCliente, function(err, data) {
       this.model.query('SEL_FACTURA_DATOSPAGO_SP', params, function(error, result) {
         result[0][0].referencia = data.REFERENCIA;
+        var codigo = result[0][0].orderNumber+result[0][0].referencia+result[0][0].cantidad
+        console.log(codigo)
+        console.log(self.conf.parameters.bancomer_secret)
+        result[0][0].codigo = CryptoJS.HmacSHA256(codigo, self.conf.parameters.bancomer_secret).toString(CryptoJS.enc.Hex)
+        console.log(result[0][0])
         self.view.ok(res, {
           mensaje: "Referencia",
           data: result[0][0]
@@ -172,6 +178,7 @@ Invoce.prototype.get_pdfReference = function(req, res, next) {
     })
     getReferenceFromWS(this.conf.parameters.WSReference, req.query.serie, req.query.folio, req.query.tipo, req.query.idCliente, function(err, data) {
       this.model.query('SEL_FACTURA_DATOSPAGO_SP', params, function(error, result) {
+        //Bancomer
         result[0][0].referencia = data.REFERENCIA;
         if (error) {
           self.view.error(res, {
