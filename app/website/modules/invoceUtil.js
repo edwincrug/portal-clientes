@@ -5,10 +5,10 @@ module.exports = {
 
     pdfGenerator: function(info, res) {
         info = info[0]
-        var doc = new PDFDocument({
-            size: [500, 320],
+       var doc = new PDFDocument({
+      /*       size: [800, 1200],
             margin: 30
-        })
+*/        })
         doc.pipe(res)
         doc.image('app/static/images/bancos/' + info.nombreBanco.toLowerCase() + '_logo.jpg', 335, 15, {
             width: 150

@@ -4,4 +4,5 @@
    bank: require('./controllers/bank'),
    fileUpload: require('./controllers/fileUpload'),
    redirect: require('./controllers/redirect'),
+   template: require('./controllers/template'),
  }

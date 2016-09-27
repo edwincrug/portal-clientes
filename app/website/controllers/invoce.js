@@ -7,6 +7,7 @@ var invoceUtil = require('../modules/invoceUtil');
 var soap = require('soap');
 var CryptoJS = require("crypto-js")
 var parseString = require('xml2js').parseString;
+var url2pdf = require("url2pdf");
 
 var Invoce = function(conf) {
   this.conf = conf || {};
@@ -138,7 +139,7 @@ Invoce.prototype.get_urlReference = function(req, res, next) {
     getReferenceFromWS(this.conf.parameters.WSReference, req.query.serie, req.query.folio, req.query.tipo, req.query.idCliente, function(err, data) {
       this.model.query('SEL_FACTURA_DATOSPAGO_SP', params, function(error, result) {
         result[0][0].referencia = data.REFERENCIA;
-        var codigo = result[0][0].orderNumber+result[0][0].referencia+result[0][0].cantidad
+        var codigo = result[0][0].orderNumber + result[0][0].referencia + result[0][0].cantidad
         console.log(codigo)
         console.log(self.conf.parameters.bancomer_secret)
         result[0][0].codigo = CryptoJS.HmacSHA256(codigo, self.conf.parameters.bancomer_secret).toString(CryptoJS.enc.Hex)
@@ -158,6 +159,7 @@ Invoce.prototype.get_urlReference = function(req, res, next) {
 }
 
 Invoce.prototype.get_pdfReference = function(req, res, next) {
+  console.log("Generar PDF")
   var self = this;
   var params = [];
   if (req.query.idInvoce, req.query.idBank, req.query.idCompany) {
@@ -185,7 +187,25 @@ Invoce.prototype.get_pdfReference = function(req, res, next) {
             mensaje: "Hubo un problema intente de nuevo",
           });
         } else {
-          invoceUtil.pdfGenerator(result[0], res)
+          var query = ""
+          for (key in result[0][0]) {
+            query += encodeURIComponent(key) + "=" + encodeURIComponent(result[0][0][key]) + "&";
+          }
+          console.log("http://localhost:4500/api/template/comprobante?" + query)
+          url2pdf.renderPdf("http://localhost:4500/api/template/comprobante?" + query, {
+              paperSize: {
+                format: "A4",
+                orientation: 'portrait',
+                margin: '0cm'
+              }
+            })
+            .then(function(path) {
+              console.log(path)
+              res.sendFile(path);
+            })
+            .catch(function(err) {
+              res.status(500).json(err);
+            })
         }
       });
     });

@@ -21,7 +21,7 @@ var ExpressServer = function(config) {
     }
     this.expressServer.engine('html', swig.renderFile);
     this.expressServer.set('view engine', 'html');
-    this.expressServer.set('views', __dirname + '/website/views/templates');
+    this.expressServer.set('views', __dirname + '/website/templates');
     swig.setDefaults({
         varControls: ['[[', ']]']
     });
