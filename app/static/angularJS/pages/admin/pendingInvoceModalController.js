@@ -28,7 +28,7 @@ app.controller('pendingInvoceModalController', function($scope, $window, Bank, I
 
   }
 
-  $scope.payInvoce = function(idInvoce, idBank, idCompany) {
+  $scope.payInvoce = function(empresa,sucursal,departamento,documento,serie,folio,cliente,almacen,importe,referencia) {
 
     if ($scope.payMethod == 1) { // Banco
       Invoce.getUrlReference(idInvoce, idBank, idCompany, $scope.invoce.serie, $scope.invoce.folio, 0, $scope.invoce.idCliente).then(function(data) {
@@ -70,11 +70,13 @@ app.controller('pendingInvoceModalController', function($scope, $window, Bank, I
       })
     } else if ($scope.payMethod == 2) { // Referencia
       $scope.content = false;
-      Invoce.getPDFReference(idInvoce, idBank, idCompany, $scope.invoce.serie, $scope.invoce.folio, 0, $scope.invoce.idCliente).then(function(data) {
-        var pdf = URL.createObjectURL(new Blob([data.data], {
-          type: "application/pdf"
-        }))
-        $("<object class='lineaCaptura' data='" + pdf + "' width='100%' height='520px' >").appendTo('#pdfReferenceContent');
+      Invoce.getPDFReference(empresa,sucursal,departamento,documento,serie,folio,cliente,almacen,importe,referencia).then(function(data) {
+        var tiene=data;
+        console.log(data)
+        // var pdf = URL.createObjectURL(new Blob([data.data], {
+        //   type: "application/pdf"
+        // }))
+        // $("<object class='lineaCaptura' data='" + pdf + "' width='100%' height='520px' >").appendTo('#pdfReferenceContent');
 
       })
     }

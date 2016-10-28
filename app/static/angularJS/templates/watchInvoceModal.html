@@ -1,7 +1,7 @@
 <div class="modal fade" id="watchInvoceModal" tabindex="-1" role="dialog" aria-labelledby="payInvoceModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" ng-class="{ 'btn-success': invoce.diasCartera <=0 , 'btn-info': invoce.diasCartera > 0 && invoce.diasCartera <=30 , 'btn-warning': invoce.diasCartera > 30 && invoce.diasCartera <=60 , 'btn-danger': invoce.diasCartera >60  }">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h2 class="modal-title" id="fileModalUpdateLabel">Factura {{invoce.serie}}{{invoce.folio}}</h2>
             </div>

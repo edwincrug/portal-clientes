@@ -17,4 +17,14 @@ ViewPrinter.prototype.see = function(res, data) {
     res.json(data);
 }
 
+ViewPrinter.prototype.writeJSON = function(res, data) {
+    res.writeHead(200, {
+            'Content-Type': 'application/json'
+        });
+    console.log(JSON.stringify(data));
+        res.write(JSON.stringify(data));
+        res.end("");
+}
+
+
 module.exports = ViewPrinter;

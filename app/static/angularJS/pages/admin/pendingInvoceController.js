@@ -49,6 +49,8 @@ app.controller('pendingInvoceController', function($scope, $filter, User, Invoce
   //Order
   $scope.orderSerie = "";
   $scope.orderFolio = "";
+  $scope.orderPedido = "";
+  $scope.orderCotizacion = "";
   $scope.orderDesc = "";
   $scope.orderDep = "";
   $scope.orderFecEmi = "";
@@ -78,6 +80,28 @@ app.controller('pendingInvoceController', function($scope, $filter, User, Invoce
       $scope.orderFolio = "asc";
     }
     orderArrayList("folio", $scope.orderFolio, false, true)
+  }
+
+  $scope.changeOrderPedido = function() {
+    if ($scope.orderPedido == "") {
+      $scope.orderPedido = "asc";
+    } else if ($scope.orderPedido == "asc") {
+      $scope.orderPedido = "desc";
+    } else if ($scope.orderPedido == "desc") {
+      $scope.orderPedido = "asc";
+    }
+    orderArrayList("pedido", $scope.orderPedido, false, true)
+  }
+
+  $scope.changeOrderCotizacion = function() {
+    if ($scope.orderCotizacion == "") {
+      $scope.orderCotizacion = "asc";
+    } else if ($scope.orderCotizacion == "asc") {
+      $scope.orderCotizacion = "desc";
+    } else if ($scope.orderCotizacion == "desc") {
+      $scope.orderCotizacion = "asc";
+    }
+    orderArrayList("cotizacion", $scope.orderCotizacion, false, true)
   }
 
   $scope.changeOrderDesc = function() {

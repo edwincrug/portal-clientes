@@ -25,30 +25,46 @@ app.factory("Invoce", function($http) {
                 }
             });
         },
-        getPDFReference: function(idInvoce, idBank, idCompany,serie,folio,tipo,idCliente ) {
+        // getPDFReference: function(idInvoce, idBank, idCompany,serie,folio,tipo,idCliente ) {
+        //     return $http.get(url + 'pdfReference/', {
+        //         responseType: 'arraybuffer',
+        //         params: {
+        //             idInvoce: idInvoce,
+        //             idBank: idBank,
+        //             idCompany: idCompany,
+        //             serie:serie,
+        //             folio:folio,
+        //             tipo:tipo,
+        //             idCliente:idCliente
+        //         }
+        //     });
+        // },
+        getPDFReference: function(empresa, sucursal, departamento, documento, serie, folio, cliente, almacen, importe, referencia) {
             return $http.get(url + 'pdfReference/', {
-                responseType: 'arraybuffer',
                 params: {
-                    idInvoce: idInvoce,
-                    idBank: idBank,
-                    idCompany: idCompany,
-                    serie:serie,
-                    folio:folio,
-                    tipo:tipo,
-                    idCliente:idCliente
+                    empresa: empresa,
+                    sucursal: sucursal,
+                    departamento: departamento,
+                    documento: documento,
+                    serie: serie,
+                    folio: folio,
+                    cliente: cliente,
+                    almacen: almacen,
+                    importe: importe,
+                    referencia: referencia
                 }
             });
         },
-        getUrlReference: function(idInvoce, idBank, idCompany,serie,folio,tipo,idCliente) {
+        getUrlReference: function(idInvoce, idBank, idCompany, serie, folio, tipo, idCliente) {
             return $http.get(url + 'urlReference/', {
                 params: {
                     idInvoce: idInvoce,
                     idBank: idBank,
                     idCompany: idCompany,
-                    serie:serie,
-                    folio:folio,
-                    tipo:tipo,
-                    idCliente:idCliente
+                    serie: serie,
+                    folio: folio,
+                    tipo: tipo,
+                    idCliente: idCliente
                 }
             });
         }

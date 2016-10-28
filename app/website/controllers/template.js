@@ -3,8 +3,8 @@ var passport = require('passport');
 var Model = require('../dataAccess');
 var View = require('../viewPrinter');
 var Auth = require('../modules/auth');
-var JsBarcode = require('jsbarcode');
-var Canvas = require("canvas");
+// var JsBarcode = require('jsbarcode');
+// var Canvas = require("canvas");
 
 
 
@@ -20,10 +20,10 @@ var Template = function(conf) {
 
 Template.prototype.get_comprobante = function(req, res, next) {
     var self = this;
-    var canvas = new Canvas();
+    //var canvas = new Canvas();
     console.log(req.query)
-    JsBarcode(canvas, req.query.referencia,{ height: 35,width:1.34,fontSize:12});
-    req.query.barcode =  canvas.toDataURL();
+    // JsBarcode(canvas, req.query.referencia,{ height: 35,width:1.34,fontSize:12});
+    // req.query.barcode =  canvas.toDataURL();
     res.render("comprobante.html",req.query)
     /*
     var params = [];

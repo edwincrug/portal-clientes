@@ -1,7 +1,7 @@
 <div class="modal fade" id="payInvoceModal" tabindex="-1" role="dialog" aria-labelledby="payInvoceModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" ng-class="{ 'btn-success': invoce.diasCartera <=0 , 'btn-info': invoce.diasCartera > 0 && invoce.diasCartera <=30 , 'btn-warning': invoce.diasCartera > 30 && invoce.diasCartera <=60 , 'btn-danger': invoce.diasCartera >60  }">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h1 class="pull-right">{{invoce.importe |currency}}</h1>
                 <h2 class="modal-title" id="payInvoceModalLabel">Factura {{invoce.serie}}{{invoce.folio}}</h2>
@@ -31,7 +31,6 @@
                         </div>
                         <br>
                         <div class="row">
-
                             <div class="col-xs-6">
                                 <p>
                                     <b>Fecha de emision</b>
@@ -45,12 +44,10 @@
                                     <b>Estatus</b>
                                 </p>
                                 <p>
-                                    {{invoce.estatus}} hace {{invoce.diasCartera}}  días.
+                                    {{invoce.estatus}} hace {{invoce.diasCartera}} días.
                                 </p>
                             </div>
                         </div>
-
-
                         <hr>
                         <h2>Selecciona metodo de pago</h2>
                         <br>
@@ -71,17 +68,20 @@
                         <br>
                         <div ng-show="payMethod">
                             <hr>
-                            <h2>Selecciona banco para pagar</h2>
+                            <h2 ng-show="payMethod == 1">Selecciona banco para pagar</h2>
                             <div class="cc-selector">
                                 <div ng-show="bank.disponible == 3 || payMethod == 1 && bank.disponible ==2 || payMethod == 2 && bank.disponible ==1 " ng-repeat="bank in banks">
                                     <a ng-click="payInvoce(invoce.folio,bank.idBanco,invoce.idEmpresa)" class="bank-cc {{bank.nombre | lowercase}}"></a>
+                                </div>
+                                <div ng-show="payMethod == 2">
+                                <button class="btn btn-primary" ng-click="payInvoce(invoce.idEmpresa,invoce.idSucursal,invoce.idDepartamento,1,invoce.serie,invoce.folio,invoce.emp_idPersona,0,invoce.importe,1)">Generar Referencia</button>
+                                    
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div style="height:530px" id="pdfReferenceContent" ng-show="!content">
-
                 </div>
             </div>
         </div>
