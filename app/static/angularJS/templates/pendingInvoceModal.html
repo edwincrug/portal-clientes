@@ -1,7 +1,7 @@
 <div class="modal fade" id="payInvoceModal" tabindex="-1" role="dialog" aria-labelledby="payInvoceModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header" ng-class="{ 'btn-success': invoce.diasCartera <=0 , 'btn-info': invoce.diasCartera > 0 && invoce.diasCartera <=30 , 'btn-warning': invoce.diasCartera > 30 && invoce.diasCartera <=60 , 'btn-danger': invoce.diasCartera >60  }">
+            <div class="modal-header" ng-class="{ 'btn-success': invoce.diasCartera <=0 , 'btn-warning': invoce.diasCartera > 0 }">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h1 class="pull-right">{{invoce.importe |currency}}</h1>
                 <h2 class="modal-title" id="payInvoceModalLabel">Factura {{invoce.serie}}{{invoce.folio}}</h2>
@@ -74,14 +74,19 @@
                                     <a ng-click="payInvoce(invoce.folio,bank.idBanco,invoce.idEmpresa)" class="bank-cc {{bank.nombre | lowercase}}"></a>
                                 </div>
                                 <div ng-show="payMethod == 2">
-                                <button class="btn btn-primary" ng-click="payInvoce(invoce.idEmpresa,invoce.idSucursal,invoce.idDepartamento,1,invoce.serie,invoce.folio,invoce.emp_idPersona,0,invoce.importe,1)">Generar Referencia</button>
-                                    
+                                    <button class="btn btn-primary" ng-click="payInvoce(0,0,0,invoce.idEmpresa,invoce.idSucursal,invoce.idDepartamento,1,invoce.serie,invoce.folio,invoce.emp_idPersona,0,invoce.importe,1,invoce.emp_nombre,invoce.suc_nombre,invoce.departamento)">Generar Referencia</button>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div style="height:530px" id="pdfReferenceContent" ng-show="!content">
+                    <div ng-show="loadingFormatoFactura" class="sk-spinner sk-spinner-rotating-plane">
+                       
+                    </div>
+                    <!-- <div ng-show="payMethod == 2">
+                        {{referencia.REFERENCIA}}
+                    </div> -->
                 </div>
             </div>
         </div>

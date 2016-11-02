@@ -1,15 +1,14 @@
 <div class="modal fade" id="watchInvoceModal" tabindex="-1" role="dialog" aria-labelledby="payInvoceModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header" ng-class="{ 'btn-success': invoce.diasCartera <=0 , 'btn-info': invoce.diasCartera > 0 && invoce.diasCartera <=30 , 'btn-warning': invoce.diasCartera > 30 && invoce.diasCartera <=60 , 'btn-danger': invoce.diasCartera >60  }">
+            <div class="modal-header" ng-class="{ 'btn-success': invoce.diasCartera <=0 , 'btn-warning': invoce.diasCartera > 0 }">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h2 class="modal-title" id="fileModalUpdateLabel">Factura {{invoce.serie}}{{invoce.folio}}</h2>
             </div>
             <div class="modal-body">
                 <div id="pdfInvoceContent">
-                    <div ng-show="loadingOrder" class="sk-spinner sk-spinner-double-bounce">
-                        <div class="sk-double-bounce1"></div>
-                        <div class="sk-double-bounce2"></div>
+                    <div ng-show="loadingOrder" class="sk-spinner sk-spinner-rotating-plane">
+                        
                     </div>
                 </div>
             </div>

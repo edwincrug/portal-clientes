@@ -96,6 +96,7 @@ Invoce.prototype.get_list = function(req, res, next) {
 
 Invoce.prototype.get_listPayed = function(req, res, next) {
     var self = this;
+
     var params = [];
     if (req.query.idUser) {
         params.push({
@@ -103,7 +104,10 @@ Invoce.prototype.get_listPayed = function(req, res, next) {
             value: req.query.idUser,
             type: self.model.types.INT
         })
-        this.model.query('SEL_FACTURAS_PAGADAS_SP', params, function(error, result) {
+        console.log(params)
+        this.model.query('SEL_TOTAL_DOC_PAG_DETALLE_SP_TODAS', params, function(error, result) {
+          console.log(result)
+          console.log(error)
             self.view.ok(res, {
                 data: result[0]
             });
@@ -118,6 +122,9 @@ Invoce.prototype.get_listPayed = function(req, res, next) {
 
 
 Invoce.prototype.get_urlReference = function(req, res, next) {
+  console.log('si entro a la api')
+  console.log(this.conf.parameters.WSReferenceDos)
+  console.log(req.query.serie,req.query.folio,req.query.tipo,req.query.idCliente)
     var self = this;
     var params = [];
     if (req.query.idInvoce, req.query.idBank, req.query.idCompany) {
@@ -136,9 +143,11 @@ Invoce.prototype.get_urlReference = function(req, res, next) {
             value: req.query.idCompany,
             type: self.model.types.INT
         })
-        getReferenceFromWS(this.conf.parameters.WSReference, req.query.serie, req.query.folio, req.query.tipo, req.query.idCliente, function(err, data) {
+        getReferenceFromWSDos(this.conf.parameters.WSReferenceDos, req.query.serie, req.query.folio, req.query.tipo, req.query.idCliente, function(err, data) {
+            console.log(data)
             this.model.query('SEL_FACTURA_DATOSPAGO_SP', params, function(error, result) {
                 result[0][0].referencia = data.REFERENCIA;
+                console.log(result[0][0].referencia)
                 var codigo = result[0][0].orderNumber + result[0][0].referencia + result[0][0].cantidad
                 console.log(codigo)
                 console.log(self.conf.parameters.bancomer_secret)
@@ -159,7 +168,7 @@ Invoce.prototype.get_urlReference = function(req, res, next) {
 }
 
 // Invoce.prototype.get_pdfReference = function(req, res, next) {
-//   console.log("Generar PDF")
+//   //console.log("Generar PDF")
 //   var self = this;
 //   var params = [];
 //   if (req.query.idInvoce, req.query.idBank, req.query.idCompany) {
@@ -191,7 +200,7 @@ Invoce.prototype.get_urlReference = function(req, res, next) {
 //           for (key in result[0][0]) {
 //             query += encodeURIComponent(key) + "=" + encodeURIComponent(result[0][0][key]) + "&";
 //           }
-//           console.log("http://localhost:4500/api/template/comprobante?" + query)
+//           //console.log("http://localhost:4500/api/template/comprobante?" + query)
 //           url2pdf.renderPdf("http://localhost:4500/api/template/comprobante?" + query, {
 //               paperSize: {
 //                 format: "A4",
@@ -200,7 +209,7 @@ Invoce.prototype.get_urlReference = function(req, res, next) {
 //               }
 //             })
 //             .then(function(path) {
-//               console.log(path)
+//               //console.log(path)
 //               res.sendFile(path);
 //             })
 //             .catch(function(err) {
@@ -216,21 +225,50 @@ Invoce.prototype.get_urlReference = function(req, res, next) {
 //     });
 //   }
 // }
+
 Invoce.prototype.get_pdfReference = function(req, res, next) {
     var self = this;
-
     var probando = '';
+    var referencia= '';
+    var params = [];    
     getReferenceFromWS(this.conf.parameters.WSReference, req.query.empresa, req.query.sucursal, req.query.departamento, req.query.documento, req.query.serie, req.query.folio, req.query.cliente, req.query.almacen, req.query.importe, req.query.referencia, function(err, data) {
-        console.log(data);
+        //console.log(data);
 
         probando = data;
-        self.view.writeJSON(res, data);
+        //console.log(probando.REFERENCIA);
+        referencia= probando.REFERENCIA;
+        //self.view.writeJSON(res, data);
+
+        if (err) {
+          self.view.error(res, {
+            mensaje: "Hubo un problema intente de nuevo",
+          });
+        } else {
+          var query = "empresa="+req.query.nomempresa+"&"+"sucursal="+req.query.nomsucursal+"&"+"departamento="+req.query.nomdepartamento+"&"+"documento="+req.query.documento+"&"+"cliente="+req.query.cliente+"&"+"importe="+req.query.importe+"&"+"serie="+req.query.serie+"&"+"folio="+req.query.folio+"&";
+          for (key in probando) {
+            query += encodeURIComponent(key) + "=" + encodeURIComponent(probando[key]) + "&";
+          }
+          
+          //console.log("http://localhost:4500/api/template/comprobante?" + query)
+          url2pdf.renderPdf("http://localhost:4500/api/template/comprobante?" + query, {
+              paperSize: {
+                format: "A4",
+                orientation: 'portrait',
+                margin: '0cm'
+              }
+            })
+            .then(function(path) {
+              //console.log(path)
+              res.sendFile(path);
+            })
+            .catch(function(err) {
+              res.status(500).json(err);
+            })
+        }
+
+
     });
-
-
-
-   
-
+  
 }
 
 
@@ -241,7 +279,7 @@ function getReferenceFromWS(url, idEmpresa, idSucursal, idDepartamento, idTipoDo
         function(error, response, body) {
             if (!error && response.statusCode == 200) {
                 body = JSON.parse(body);
-                console.log(body)
+                //console.log(body)
                 cb(null, body);
             } else {
                 cb(error)
@@ -249,16 +287,16 @@ function getReferenceFromWS(url, idEmpresa, idSucursal, idDepartamento, idTipoDo
         })
 };
 
-// function getReferenceFromWS(url, serie, folio, tipo, idCliente, cb) {
-//   request.get(url + "?serie=" + serie + "&folio=" + folio + "&tipo=" + tipo + "&idCliente=" + idCliente, function(error, response, body) {
-//     if (!error && response.statusCode == 200) {
-//       body = JSON.parse(body);
-//       console.log(body)
-//       cb(null, body);
-//     } else {
-//       cb(error)
-//     }
-//   })
-// }
+function getReferenceFromWSDos(url, serie, folio, tipo, idCliente, cb) {
+  request.get(url + "?serie=" + serie + "&folio=" + folio + "&tipo=" + tipo + "&idCliente=" + idCliente, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      body = JSON.parse(body);
+      //console.log(body)
+      cb(null, body);
+    } else {
+      cb(error)
+    }
+  })
+}
 
 module.exports = Invoce;

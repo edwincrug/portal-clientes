@@ -5633,9 +5633,9 @@ body.body-small .vote-icon {
  *
  */
 .sk-spinner-rotating-plane.sk-spinner {
-  width: 30px;
-  height: 30px;
-  background-color: #1ab394;
+  width: 60px;
+  height: 60px;
+  background-color: #1c84c6;
   margin: 0 auto;
   -webkit-animation: sk-rotatePlane 1.2s infinite ease-in-out;
   animation: sk-rotatePlane 1.2s infinite ease-in-out;

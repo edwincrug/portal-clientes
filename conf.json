@@ -1,6 +1,7 @@
 {
     "WSInvoce": "http://192.168.20.9:8095/Service1.asmx?WSDL",
     "WSReference": "http://192.168.20.9:1430/api/referencia/referencia",
+    "WSReferenceDos": "http://192.168.20.9:1420/api/referencia/referencia",
     "port": 4500,
     "SQL_user": "sa",
     "SQL_password": "S0p0rt3",

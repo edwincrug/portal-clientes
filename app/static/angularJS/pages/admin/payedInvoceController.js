@@ -12,6 +12,8 @@ app.controller('payedInvoceController', function($scope, $filter, User, Invoce, 
 
   //Carga de datos inicial.
   User.me().then(function(user) {
+    // $('#loading').modal('show'); 
+    // $scope.loadingPorPagar=true;   
     $scope.user = user.data.data
     Invoce.getPayedByIdUser($scope.user.idCliente).then(function(r) {
       $scope.listInvoces = r.data.data;
@@ -42,6 +44,8 @@ app.controller('payedInvoceController', function($scope, $filter, User, Invoce, 
       })
       $scope.company = $scope.companyList[0];
       totalElements = $scope.listInvoces.length;
+      // $('#loading').modal('hide'); 
+      // $scope.loadingPorPagar=false;
     })
 
   })
@@ -56,7 +60,20 @@ app.controller('payedInvoceController', function($scope, $filter, User, Invoce, 
   $scope.orderEstatus = "";
   $scope.orderImporte = "";
   $scope.orderSaldo = "";
+  $scope.orderId = "";
+$scope.orderEmpresa= "";
+$scope.orderSucursal= "";
 
+  $scope.changeOrderId = function() {
+    if ($scope.orderId == "") {
+      $scope.orderId = "asc";
+    } else if ($scope.orderId == "asc") {
+      $scope.orderId = "desc";
+    } else if ($scope.orderId == "desc") {
+      $scope.orderId = "asc";
+    }
+    orderArrayList("id", $scope.orderId, false, true)
+  }
 
   $scope.changeOrderSerie = function() {
     if ($scope.orderSerie == "") {
@@ -144,6 +161,28 @@ app.controller('payedInvoceController', function($scope, $filter, User, Invoce, 
       $scope.orderImporte = "asc";
     }
     orderArrayList("importe", $scope.orderImporte, false, false)
+  }
+
+  $scope.changeOrderEmpresa = function() {
+    if ($scope.orderEmpresa == "") {
+      $scope.orderEmpresa = "asc";
+    } else if ($scope.orderEmpresa == "asc") {
+      $scope.orderEmpresa = "desc";
+    } else if ($scope.orderEmpresa == "desc") {
+      $scope.orderEmpresa = "asc";
+    }
+    orderArrayList("empresa", $scope.orderEmpresa, false, true)
+  }
+
+  $scope.changeOrderSucursal = function() {
+    if ($scope.orderSucursal == "") {
+      $scope.orderSucursal = "asc";
+    } else if ($scope.orderSucursal == "asc") {
+      $scope.orderSucursal = "desc";
+    } else if ($scope.orderSucursal == "desc") {
+      $scope.orderSucursal = "asc";
+    }
+    orderArrayList("sucursal", $scope.orderSucursal, false, true)
   }
 
   $scope.changeOrderSaldo = function() {

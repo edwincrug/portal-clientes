@@ -39,8 +39,9 @@ app.factory("Invoce", function($http) {
         //         }
         //     });
         // },
-        getPDFReference: function(empresa, sucursal, departamento, documento, serie, folio, cliente, almacen, importe, referencia) {
+        getPDFReference: function(empresa, sucursal, departamento, documento, serie, folio, cliente, almacen, importe, referencia, nomempresa, nomsucursal, nomdepartamento) {
             return $http.get(url + 'pdfReference/', {
+                responseType: 'arraybuffer',
                 params: {
                     empresa: empresa,
                     sucursal: sucursal,
@@ -51,7 +52,10 @@ app.factory("Invoce", function($http) {
                     cliente: cliente,
                     almacen: almacen,
                     importe: importe,
-                    referencia: referencia
+                    referencia: referencia,
+                    nomempresa: nomempresa,
+                    nomsucursal: nomsucursal,
+                    nomdepartamento: nomdepartamento
                 }
             });
         },

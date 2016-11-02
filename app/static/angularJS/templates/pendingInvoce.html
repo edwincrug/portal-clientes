@@ -40,10 +40,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered table-condensed ">
+                    <div class="table-responsive" ng-show="mostrarTabla">
+                        <table class="table table-striped table-bordered table-condensed">
                             <thead>
                                 <tr>
+                                    <th style="min-width: 120px;">
+                                        <button ng-click="changeOrderEmpresa()" ng-class="{'fa-sort': orderEmpresa=='','fa-sort-asc': orderEmpresa=='asc','fa-sort-desc': orderEmpresa=='desc'}" class="btn btn-xs fa pull-right" type="button" name="button"></button>
+                                        Empresa</th>
+                                    <th style="min-width: 120px;">
+                                        <button ng-click="changeOrderSucursal()" ng-class="{'fa-sort': orderSucursal=='','fa-sort-asc': orderSucursal=='asc','fa-sort-desc': orderSucursal=='desc'}" class="btn btn-xs fa pull-right" type="button" name="button"></button>
+                                        Sucursal</th>
+                                    <!-- <th style="min-width: 120px;">
+                                        <button ng-click="changeOrderDesc()" ng-class="{'fa-sort': orderDesc=='','fa-sort-asc': orderDesc=='asc','fa-sort-desc': orderDesc=='desc'}" class="btn btn-xs fa pull-right" type="button" name="button"></button>
+                                        Descripcion</th> -->
+                                    <th style="min-width: 138px;">
+                                        <button ng-click="changeOrderDep()" ng-class="{'fa-sort': orderDep=='','fa-sort-asc': orderDep=='asc','fa-sort-desc': orderDep=='desc'}" class="btn btn-xs fa pull-right" type="button" name="button"></button>
+                                        Departamento</th>
+                                    <th style="min-width: 75px;">
+                                        <button ng-click="changeOrderId()" ng-class="{'fa-sort': orderId=='','fa-sort-asc': orderId=='asc','fa-sort-desc': orderId=='desc'}" class="btn btn-xs fa pull-right" type="button" name="button"></button>
+                                        Id</th>
                                     <th style="min-width: 75px;">
                                         <button ng-click="changeOrderSerie()" ng-class="{'fa-sort': orderSerie=='','fa-sort-asc': orderSerie=='asc','fa-sort-desc': orderSerie=='desc'}" class="btn btn-xs fa pull-right" type="button" name="button"></button>
                                         Serie</th>
@@ -56,16 +71,11 @@
                                     <th style="min-width: 120px;">
                                         <button ng-click="changeOrderCotizacion()" ng-class="{'fa-sort': orderCotizacion=='','fa-sort-asc': orderCotizacion=='asc','fa-sort-desc': orderCotizacion=='desc'}" class="btn btn-xs fa pull-right" type="button" name="button"></button>
                                         Cotización</th>
-                                    <th style="min-width: 120px;">
-                                        <button ng-click="changeOrderDesc()" ng-class="{'fa-sort': orderDesc=='','fa-sort-asc': orderDesc=='asc','fa-sort-desc': orderDesc=='desc'}" class="btn btn-xs fa pull-right" type="button" name="button"></button>
-                                        Descripcion</th>
-                                    <th style="min-width: 138px;">
-                                        <button ng-click="changeOrderDep()" ng-class="{'fa-sort': orderDep=='','fa-sort-asc': orderDep=='asc','fa-sort-desc': orderDep=='desc'}" class="btn btn-xs fa pull-right" type="button" name="button"></button>
-                                        Departamento</th>
                                     <th style="min-width: 100px;">
                                         <button ng-click="changeOrderFecEmi()" ng-class="{'fa-sort': orderFecEmi=='','fa-sort-asc': orderFecEmi=='asc','fa-sort-desc': orderFecEmi=='desc'}" class="btn btn-xs fa pull-right" type="button" name="button"></button>
                                         Fecha
-                                        <!-- Fecha de emisión --></th>
+                                        <!-- Fecha de emisión -->
+                                    </th>
                                     <!-- <th style="min-width: 100px;">
                                         <button ng-click="changeOrderFecVen()" ng-class="{'fa-sort': orderFecVen=='','fa-sort-asc': orderFecVen=='asc','fa-sort-desc': orderFecVen=='desc'}" class="btn btn-xs fa pull-right" type="button" name="button"></button>
                                         Fecha de vencimiento</th> -->
@@ -78,13 +88,29 @@
                                     <th style="min-width: 85px;">
                                         <button ng-click="changeOrderSaldo()" ng-class="{'fa-sort': orderSaldo=='','fa-sort-asc': orderSaldo=='asc','fa-sort-desc': orderSaldo=='desc'}" class="btn btn-xs fa pull-right" type="button" name="button"></button>
                                         Saldo</th>
-                                    <th>Consultar</th>
-                                    <th>Pagar</th>
+                                    <th ng-hide="mostrarBtnSeleccionar">Consultar</th>
+                                    <th ng-hide="mostrarBtnSeleccionar">Pagar</th>
+                                    <th ng-show="mostrarBtnSeleccionar">Seleccionar</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="invoce in listInvoces | company : company | branch:branch
                                 | filter : filterText | offset: currentPage*itemsPerPage | limitTo: itemsPerPage">
+                                    <td>
+                                        {{invoce.emp_nombre}}
+                                    </td>
+                                    <td>
+                                        {{invoce.suc_nombre}}
+                                    </td>
+                                    <!-- <td>
+                                        {{invoce.descripcion}}
+                                    </td> -->
+                                    <td>
+                                        {{invoce.departamento}}
+                                    </td>
+                                    <td>
+                                        {{invoce.emp_idPersona}}
+                                    </td>
                                     <td>
                                         {{invoce.serie}}
                                     </td>
@@ -98,12 +124,6 @@
                                         {{invoce.cotizacion}}
                                     </td>
                                     <td>
-                                        {{invoce.descripcion}}
-                                    </td>
-                                    <td>
-                                        {{invoce.departamento}}
-                                    </td>
-                                    <td>
                                         {{invoce.fechadoc | date:"dd/MM/yyyy"}}
                                     </td>
                                     <!-- <td>
@@ -112,8 +132,11 @@
                                     <td>
                                         {{invoce.fechaVencimiento | date:"dd/MM/yyyy"}}
                                     </td> -->
-                                    <td title="{{invoce.diasCartera}}" ng-class="{ 'btn-success': invoce.diasCartera <=0 , 'btn-info': invoce.diasCartera > 0 && invoce.diasCartera <=30 , 'btn-warning': invoce.diasCartera > 30 && invoce.diasCartera <=60 , 'btn-danger': invoce.diasCartera >60  }">
-                                        <span >{{invoce.estatus}}</span>
+                                    <td title="{{invoce.diasCartera}}" ng-class="{ 'label-primary': invoce.diasCartera <=0 , 'label-warning': invoce.diasCartera > 0 }">
+                                        <!-- style="color:white;background-color:#F35B25" -->
+                                        <!--  ng-class="{ 'btn-success': invoce.diasCartera <=0 , 'btn-danger': invoce.diasCartera > 0 }"-->
+                                        <!-- && invoce.diasCartera <=30 , 'btn-warning': invoce.diasCartera > 30 && invoce.diasCartera <=60 , 'btn-danger': invoce.diasCartera >60  -->
+                                        <span>{{invoce.estatus}}</span>
                                         <br><span ng-show="invoce.diasCartera>0">{{invoce.diasCartera}} días</span>
                                     </td>
                                     <td>
@@ -122,18 +145,23 @@
                                     <td>
                                         {{invoce.saldo | currency}}
                                     </td>
-                                    <td>
-                                        <button data-toggle="modal" ng-click="viewInvoce(invoce)" data-target="#watchInvoceModal" style="width:60px;" title="Consultar factura" type="button" class="btn btn-block"><i class="fa fa-search-plus"></i></button>
+                                    <td ng-hide="mostrarBtnSeleccionar">
+                                        <button data-toggle="modal" ng-click="viewInvoce(invoce)" data-target="#watchInvoceModal" style="width:60px;" title="Consultar factura" type="button" class="btn btn-block"><i class="fa fa-file-pdf-o"></i></button>
                                     </td>
-                                    <td>
+                                    <td ng-hide="mostrarBtnSeleccionar">
                                         <button data-toggle="modal" ng-click="payInvoce(invoce)" data-target="#payInvoceModal" style="width:60px;" title="Pagar" type="button" class="btn btn-success"><i class="fa fa-usd"></i></button>
+                                    </td>
+                                    <td ng-show="mostrarBtnSeleccionar">
+                                        <input type="checkbox" class="icheckbox_square-green" ng-model="invoce.seleccionada">
+                                        <!-- <button ng-hide="seleccionarFactura" class="btn btn-primary dim" type="button" ng-click="selFactura()"><i class="fa fa-check"></i></button>
+                                        <button ng-show="seleccionarFactura" class="btn btn-danger  dim " type="button" ng-click="noSelFactura()"><i class="fa fa-close"></i></button> -->
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <span>Pagina {{currentPage+1}} de {{pageCount()+1}}</span>
-                    <div class="admin-pagination">
+                    <span ng-show="mostrarTabla">Pagina {{currentPage+1}} de {{pageCount()+1}}</span>
+                    <div class="admin-pagination" ng-show="mostrarTabla">
                         <ul class="pagination">
                             <li ng-class="prevPageDisabled()">
                                 <a href ng-click="prevPage()"><i class="fa fa-chevron-left"></i></a>
@@ -145,6 +173,14 @@
                                 <a href ng-click="nextPage()"><i class="fa fa-chevron-right"></i></a>
                             </li>
                         </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <button class="btn btn-sm btn-primary pull-right" ng-click="generarLote()" ng-hide="mostrarBtnLote">Generar Lote</button>
+                                <button class="btn btn-sm btn-primary pull-right" ng-click="guardarFacturas(listInvoces)" ng-show="mostrarBtnFactura" >Guardar Facturas</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
