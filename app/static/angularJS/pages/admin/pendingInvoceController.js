@@ -1,9 +1,11 @@
-app.controller('pendingInvoceController', function($scope, $filter, User, Invoce, InvoceFactory) {
+app.controller('pendingInvoceController', function($scope, $filter,$state, User, Invoce, InvoceFactory) {
     $scope.mostrarTabla = true;
     $scope.mostrarBtnSeleccionar = false;
     $scope.seleccionarFactura = false;
-    $scope.mostrarBtnLote= false;
-    $scope.mostrarBtnFactura=false;
+    $scope.mostrarBtnLote = false;
+    $scope.mostrarBtnFactura = false;
+    $scope.mostrarAlerta=false;
+    $scope.mostrarBtnCancelar=false;
     $scope.idinvoce = null;
     $scope.listInvoces = [];
     $scope.selectedOptionBank;
@@ -15,13 +17,14 @@ app.controller('pendingInvoceController', function($scope, $filter, User, Invoce
         idSucursal: 0,
         sucursal: "--- Selecciona ---"
     }];
+    
 
     //Carga de datos inicial.
     User.me().then(function(user) {
         $scope.user = user.data.data
         Invoce.getByIdUser($scope.user.idCliente).then(function(r) {
             $scope.listInvoces = r.data.data;
-            console.log($scope.listInvoces)
+            //console.log($scope.listInvoces)
             $scope.listInvoces.forEach(function(d) {
                 //Llenar array de Empresas
                 if (!$scope.companyList.find(function(c) {
@@ -276,7 +279,8 @@ app.controller('pendingInvoceController', function($scope, $filter, User, Invoce
             if ($scope.mostrarTabla == false) {
                 $scope.mostrarTabla = true;
                 $scope.mostrarBtnSeleccionar = true;
-                $scope.mostrarBtnFactura=true;
+                $scope.mostrarBtnFactura = true;
+                $scope.mostrarAlerta=false;
             }
         } else {
             filterApply()
@@ -356,7 +360,9 @@ app.controller('pendingInvoceController', function($scope, $filter, User, Invoce
 
     $scope.generarLote = function() {
         $scope.mostrarTabla = false;
-        $scope.mostrarBtnLote= true;
+        $scope.mostrarBtnLote = true;
+        $scope.mostrarAlerta=true;
+        $scope.mostrarBtnCancelar=true;
     }
     $scope.selFactura = function(idinvoce) {
         $scope.seleccionarFactura = true;
@@ -365,18 +371,22 @@ app.controller('pendingInvoceController', function($scope, $filter, User, Invoce
     $scope.noSelFactura = function() {
         $scope.seleccionarFactura = false;
     }
-    $scope.guardarFacturas = function(facturas) {
+
+    $scope.facturaInvoce = function(invoce) {
         $scope.array = {};
-        $scope.conArray=0;
-        angular.forEach(facturas, function(value, key) {
+        $scope.conArray = 0;
+        angular.forEach(invoce, function(value, key) {
             //alert(value.nombre + 'Seleccionado: ' + value.seleccionado);
 
             if (value.seleccionada == true) {
-                $scope.array[$scope.conArray]=value                
+                $scope.array[$scope.conArray] = value
                 $scope.conArray++;
             }
         });
-        console.log($scope.array)
+        InvoceFactory.setInvoce($scope.array);
+    }
+    $scope.cancelar=function(){
+        $state.go($state.current, {}, {reload: true});
     }
 
 })

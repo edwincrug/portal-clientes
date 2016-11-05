@@ -18,9 +18,12 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <div class="row">
+                        <div class="alert alert-danger" ng-show="mostrarAlerta">
+                            Seleccioné una empresa  
+                        </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="pOrder.nOrder">Busqueda</label>
+                                <label for="pOrder.nOrder">Búsqueda</label>
                                 <input ng-change="changeFilter()" ng-model="filterText" class="form-control" id="pOrder.nOrder">
                                 <i class=""></i>
                             </div>
@@ -152,7 +155,7 @@
                                         <button data-toggle="modal" ng-click="payInvoce(invoce)" data-target="#payInvoceModal" style="width:60px;" title="Pagar" type="button" class="btn btn-success"><i class="fa fa-usd"></i></button>
                                     </td>
                                     <td ng-show="mostrarBtnSeleccionar">
-                                        <input type="checkbox" class="icheckbox_square-green" ng-model="invoce.seleccionada">
+                                        <input type="checkbox" class="icheckbox_square-green iradio_square-green" ng-model="invoce.seleccionada">
                                         <!-- <button ng-hide="seleccionarFactura" class="btn btn-primary dim" type="button" ng-click="selFactura()"><i class="fa fa-check"></i></button>
                                         <button ng-show="seleccionarFactura" class="btn btn-danger  dim " type="button" ng-click="noSelFactura()"><i class="fa fa-close"></i></button> -->
                                     </td>
@@ -160,7 +163,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <span ng-show="mostrarTabla">Pagina {{currentPage+1}} de {{pageCount()+1}}</span>
+                    <span ng-show="mostrarTabla">Página {{currentPage+1}} de {{pageCount()+1}}</span>
                     <div class="admin-pagination" ng-show="mostrarTabla">
                         <ul class="pagination">
                             <li ng-class="prevPageDisabled()">
@@ -177,8 +180,9 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <button class="btn btn-sm btn-primary pull-right" ng-click="generarLote()" ng-hide="mostrarBtnLote">Generar Lote</button>
-                                <button class="btn btn-sm btn-primary pull-right" ng-click="guardarFacturas(listInvoces)" ng-show="mostrarBtnFactura" >Guardar Facturas</button>
+                                <button class="btn btn-danger pull-right" ng-click="cancelar()" ng-show="mostrarBtnCancelar" >Cancelar</button>
+                                <button class="btn btn-primary pull-right" ng-click="generarLote()" ng-hide="mostrarBtnLote">Generar Lote</button>
+                                <button data-toggle="modal" ng-click="facturaInvoce(listInvoces)" data-target="#facturaInvoceModal" class="btn btn-primary pull-right" title="factura" type="button" ng-show="mostrarBtnFactura">Generar Referencia</button>
                             </div>
                         </div>
                     </div>

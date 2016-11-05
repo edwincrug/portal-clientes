@@ -5,4 +5,5 @@
    fileUpload: require('./controllers/fileUpload'),
    redirect: require('./controllers/redirect'),
    template: require('./controllers/template'),
+   templateDos: require('./controllers/templateDos'),
  }

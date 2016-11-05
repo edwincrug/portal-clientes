@@ -31,7 +31,7 @@ app.controller('pendingInvoceModalController', function($scope, $window, Bank, I
     $scope.payInvoce = function(idInvoce, idBank, idCompany, empresa, sucursal, departamento, documento, serie, folio, cliente, almacen, importe, referencia, nomempresa, nomsucursal, nomdepartamento) {
 
         if ($scope.payMethod == 1) { // Banco
-            Invoce.getUrlReference(idInvoce, idBank, idCompany, $scope.invoce.serie, $scope.invoce.folio, 0, $scope.invoce.idCliente).then(function(data) {
+            Invoce.getUrlReference(idInvoce, idBank, idCompany, empresa, sucursal, departamento, documento, serie, folio, cliente, almacen, importe, referencia, nomempresa, nomsucursal, nomdepartamento).then(function(data) {
                 data = data.data.data
                 var x = 1000;
                 var y = 600;
@@ -77,6 +77,7 @@ app.controller('pendingInvoceModalController', function($scope, $window, Bank, I
                 var pdf = URL.createObjectURL(new Blob([data.data], {
                     type: "application/pdf"
                 }))
+                console.log(pdf)
                 $("<object class='lineaCaptura' data='" + pdf + "' width='100%' height='520px' >").appendTo('#pdfReferenceContent');
                 $scope.loadingFormatoFactura = false;
             })

@@ -4,7 +4,7 @@
             <ul class="nav metismenu" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element"> <span>
-                        <img alt="image" class="img-circle circle-border m-b-md" src="images/profile/{{user.imagen}}"/>
+                        <!-- <img alt="image" class="img-circle circle-border m-b-md" src="images/profile/{{user.imagen}}"/> -->
                          </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{user.nombreCliente}}</strong>
@@ -60,7 +60,7 @@
                             <li>
                                 <a ng-click="viewAlert(rfc,2)" href="noticias">
                                     <div>
-                                        <i class="fa fa-newspaper-o"></i> Tienes {{alertNews.textoAlerta}} noticias sin leer
+                                        <i class="fa fa-newspaper-o"></i> Tiene {{alertNews.textoAlerta}} noticias sin leer
                                     </div>
                                 </a>
                             </li>
@@ -74,7 +74,7 @@
                             <li>
                                 <a ng-click="viewAlert(rfc,1)" href="ordenes-pendientes">
                                     <div>
-                                        <i class="fa fa-file-o"></i> Tienes {{alertNewOrder.textoAlerta}} ordenes de compra sin leer
+                                        <i class="fa fa-file-o"></i> Tiene {{alertNewOrder.textoAlerta}} ordenes de compra sin leer
                                     </div>
                                 </a>
                             </li>

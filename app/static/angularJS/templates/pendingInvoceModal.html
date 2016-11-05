@@ -14,7 +14,7 @@
                         <div class="row">
                             <div class="col-xs-6">
                                 <p>
-                                    <b>Descripcion</b>
+                                    <b>Descripción</b>
                                 </p>
                                 <p>
                                     {{invoce.descripcion}}
@@ -33,7 +33,7 @@
                         <div class="row">
                             <div class="col-xs-6">
                                 <p>
-                                    <b>Fecha de emision</b>
+                                    <b>Fecha de emisión</b>
                                 </p>
                                 <p>
                                     {{invoce.fechaEmision | date:"dd/MM/yyyy" }}
@@ -49,7 +49,7 @@
                             </div>
                         </div>
                         <hr>
-                        <h2>Selecciona metodo de pago</h2>
+                        <h2>Seleccione método de pago</h2>
                         <br>
                         <div class="row">
                             <div class="col-xs-6">
@@ -61,17 +61,17 @@
                             <div class="col-xs-6">
                                 <div class="radio">
                                     <input ng-model="payMethod" type="radio" id="radioReference" value="2" name="radioInline">
-                                    <label for="radioReference">Linea de captura</label>
+                                    <label for="radioReference">Línea de captura</label>
                                 </div>
                             </div>
                         </div>
                         <br>
                         <div ng-show="payMethod">
                             <hr>
-                            <h2 ng-show="payMethod == 1">Selecciona banco para pagar</h2>
+                            <h2 ng-show="payMethod == 1">Seleccioné banco para pagar</h2>
                             <div class="cc-selector">
                                 <div ng-show="bank.disponible == 3 || payMethod == 1 && bank.disponible ==2 || payMethod == 2 && bank.disponible ==1 " ng-repeat="bank in banks">
-                                    <a ng-click="payInvoce(invoce.folio,bank.idBanco,invoce.idEmpresa)" class="bank-cc {{bank.nombre | lowercase}}"></a>
+                                    <a ng-click="payInvoce(invoce.folio,bank.idBanco,invoce.idEmpresa,invoce.idEmpresa,invoce.idSucursal,invoce.idDepartamento,1,invoce.serie,invoce.folio,invoce.emp_idPersona,0,invoce.importe,1,invoce.emp_nombre,invoce.suc_nombre,invoce.departamento)" class="bank-cc {{bank.nombre | lowercase}}"></a>
                                 </div>
                                 <div ng-show="payMethod == 2">
                                     <button class="btn btn-primary" ng-click="payInvoce(0,0,0,invoce.idEmpresa,invoce.idSucursal,invoce.idDepartamento,1,invoce.serie,invoce.folio,invoce.emp_idPersona,0,invoce.importe,1,invoce.emp_nombre,invoce.suc_nombre,invoce.departamento)">Generar Referencia</button>

@@ -68,6 +68,10 @@ var app = angular.module('app', ['ui.router', 'httpHelper', 'ngCookies'])
                     watchInvoce: {
                         templateUrl: '/angularJS/templates/watchInvoceModal.html',
                         controller: 'watchInvoceModalController'
+                    },
+                    facturaInvoce: {
+                        templateUrl: '/angularJS/templates/facturaInvoceModal.html',
+                        controller: 'facturaInvoceModalController'
                     }
                 }
             })
