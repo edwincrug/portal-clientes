@@ -5,6 +5,7 @@ var env = process.env.NODE_ENV || 'production',
     router = require('./website/router'),
     auth = require('./website/modules/auth');
 
+require('swig-filters')(swig);
 
 
 //Alta de opciones
@@ -45,7 +46,7 @@ var ExpressServer = function(config) {
             var data = funcionalidad.split('_')[2];
             data = (method == 'get' && data !== undefined) ? ':data' : '';
             var url = '/api/' + controller + '/' + entorno + '/' + data;
-            this.router(controller, funcionalidad, method, url,middles);
+            this.router(controller, funcionalidad, method, url, middles);
         }
     }
     //Servimos el archivo angular
@@ -54,10 +55,10 @@ var ExpressServer = function(config) {
     });
 };
 
-ExpressServer.prototype.router = function(controller, funcionalidad, method, url,middles) {
+ExpressServer.prototype.router = function(controller, funcionalidad, method, url, middles) {
     console.log(url);
     var parameters = this.config.parameters;
-    this.expressServer[method](url,middles, function(req, res, next) {
+    this.expressServer[method](url, middles, function(req, res, next) {
         var conf = {
             'funcionalidad': funcionalidad,
             'req': req,

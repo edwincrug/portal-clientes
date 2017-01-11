@@ -77,7 +77,7 @@ app.controller('pendingInvoceModalController', function($scope, $window, Bank, I
                 var pdf = URL.createObjectURL(new Blob([data.data], {
                     type: "application/pdf"
                 }))
-                console.log(pdf)
+                //console.log(pdf)
                 $("<object class='lineaCaptura' data='" + pdf + "' width='100%' height='520px' >").appendTo('#pdfReferenceContent');
                 $scope.loadingFormatoFactura = false;
             })

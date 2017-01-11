@@ -107,10 +107,10 @@ Invoce.prototype.get_listPayed = function(req, res, next) {
             value: req.query.idUser,
             type: self.model.types.INT
         })
-        console.log(params)
+        //console.log(params)
         this.model.query('SEL_TOTAL_DOC_PAG_DETALLE_SP_TODAS', params, function(error, result) {
-            console.log(result)
-            console.log(error)
+            //console.log(result)
+            //console.log(error)
             self.view.ok(res, {
                 data: result[0]
             });
@@ -125,9 +125,9 @@ Invoce.prototype.get_listPayed = function(req, res, next) {
 
 
 Invoce.prototype.get_urlReference = function(req, res, next) {
-    console.log('si entro a la api')
-    console.log(this.conf.parameters.WSReferenceDos)
-    console.log(this.conf.parameters.WSReference, req.query.empresa, req.query.sucursal, req.query.departamento, req.query.documento, req.query.serie, req.query.folio, req.query.cliente, req.query.almacen, req.query.importe, req.query.referencia)
+    //console.log('si entro a la api')
+    //console.log(this.conf.parameters.WSReferenceDos)
+    //console.log(this.conf.parameters.WSReference, req.query.empresa, req.query.sucursal, req.query.departamento, req.query.documento, req.query.serie, req.query.folio, req.query.cliente, req.query.almacen, req.query.importe, req.query.referencia)
     var self = this;
     var params = [];
     if (req.query.idInvoce, req.query.idBank, req.query.idCompany) {
@@ -136,7 +136,7 @@ Invoce.prototype.get_urlReference = function(req, res, next) {
             //console.log(data);
 
             probando = data;
-            console.log(probando.idReferencia);
+            //console.log(probando.idReferencia);
             referencia = probando.idReferencia;
             //self.view.writeJSON(res, data);
             params.push({
@@ -150,7 +150,7 @@ Invoce.prototype.get_urlReference = function(req, res, next) {
                 type: self.model.types.INT
             })
             this.model.query('SEL_FACTURA_DATOS_PAGO_SP', params, function(error, result) {
-                console.log(result[0][0])
+                //console.log(result[0][0])
                 self.view.ok(res, {
                     mensaje: "Referencia",
                     data: result[0][0]
@@ -253,27 +253,27 @@ Invoce.prototype.get_pdfReference = function(req, res, next) {
         //console.log(probando.REFERENCIA);
         referencia = probando.REFERENCIA;
         //self.view.writeJSON(res, data);
-        console.log('1.-estamos aqui en genera PDF() cliente: ' + probando.idReferencia);
+        //console.log('1.-estamos aqui en genera PDF() cliente: ' + probando.idReferencia);
 
         phantom.create().then(function(ph) {
             ph.createPage().then(function(page) {
-                console.log('2.-Mando a llamar a Nuevo');
+                //console.log('2.-Mando a llamar a Nuevo');
                 //inicia Page.property
                 page.property('paperSize', {
                     format: 'A4'
                 }).then(function() {
                     page.open("http://localhost:4500/api/templateDos/nuevo?idReferencia=" + probando.idReferencia).then(function(status) {
-                        console.log(status);
+                        //console.log(status);
                         page.render('Reporte_Lote.pdf').then(function() {
-                            console.log('4.-Regreso y estoy en Page Rendered');
+                            //console.log('4.-Regreso y estoy en Page Rendered');
                             page.close();
                             ph.exit();
-                            console.log('5.-Page Rendered2');
+                            //console.log('5.-Page Rendered2');
                             setTimeout(function() {
                                 res.sendFile("Reporte_Lote.pdf", {
                                     root: path.join(__dirname, '../../../')
                                 });
-                                console.log('6.-Page Rendered3');
+                                //console.log('6.-Page Rendered3');
                             }, 10)
 
                         });
@@ -370,34 +370,34 @@ Invoce.prototype.post_addDetailsReference = function(req, res, next) {
 
 Invoce.prototype.get_DetailsReference = function(req, res, next) {
     var self = this;
-    console.log(req.query.idReferencia)
+    //console.log(req.query.idReferencia)
     var params = [];
     params.push({
         name: 'idReferencia',
         value: req.query.idReferencia,
         type: self.model.types.INT
     })
-    console.log('1.-estamos aqui en genera PDF() cliente: ' + req.query.idReferencia);
+    //console.log('1.-estamos aqui en genera PDF() cliente: ' + req.query.idReferencia);
 
     phantom.create().then(function(ph) {
         ph.createPage().then(function(page) {
-            console.log('2.-Mando a llamar a Nuevo');
+            //console.log('2.-Mando a llamar a Nuevo');
             //inicia Page.property
             page.property('paperSize', {
                 format: 'A4'
             }).then(function() {
                 page.open("http://localhost:4500/api/templateDos/nuevo?idReferencia=" + req.query.idReferencia).then(function(status) {
-                    console.log(status);
+                    //console.log(status);
                     page.render('Reporte_Lote.pdf').then(function() {
-                        console.log('4.-Regreso y estoy en Page Rendered');
+                        //console.log('4.-Regreso y estoy en Page Rendered');
                         page.close();
                         ph.exit();
-                        console.log('5.-Page Rendered2');
+                        //console.log('5.-Page Rendered2');
                         setTimeout(function() {
                             res.sendFile("Reporte_Lote.pdf", {
                                 root: path.join(__dirname, '../../../')
                             });
-                            console.log('6.-Page Rendered3');
+                            //console.log('6.-Page Rendered3');
                         }, 10)
 
                     });

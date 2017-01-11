@@ -2,7 +2,7 @@ app.controller('userController', function($scope, User, $state, AlertFactory) {
 
     User.me().then(function(user) {
         $scope.user = user.data.data
-        console.log(user.data.data)
+        //console.log(user.data.data)
     })
 
     $('#logoFile').change(function() {

@@ -21,9 +21,9 @@ var TemplateDos = function(conf) {
 TemplateDos.prototype.get_nuevo = function(req, res, next) {
     var self = this;
     //var canvas = new Canvas();
-    console.log(req.query)
+    //console.log(req.query)
     var referencia=req.query;
-    console.log('Soy la referencia',referencia)
+    //console.log('Soy la referencia',referencia)
     var params = [
         {
             name: 'idReferencia',
@@ -34,56 +34,20 @@ TemplateDos.prototype.get_nuevo = function(req, res, next) {
     // JsBarcode(canvas, req.query.referencia,{ height: 35,width:1.34,fontSize:12});
     // req.query.barcode =  canvas.toDataURL();
     self.model.query('SEL_DETALLE_REFERENCIA_SP', params, function(error, result) {
-        console.log(result)
+       //console.log(result)
        var params2 = [{
            name: 'idEmpresa',
-           value: result[0].tipoReferencia,
+           value: result[0].idEmpresa,
            type: self.model.types.INT
        },{
            name: 'tipoReferencia',
-           value: result[0].idEmpresa,
+           value: result[0].tipoReferencia,
            type: self.model.types.INT
        }]
        self.model.query('SEL_LEYENDAS_PDF_SP', params2, function (error, leyendas) {
-            console.log(leyendas)
+            //console.log(leyendas)
            res.render('comprobanteDos.html',{referencias:result[0], leyendas:leyendas[0]});
        });
    });
-    // this.model.query('SEL_DETALLE_REFERENCIA_SP', params, function (error, detallelote) {
-        
-    //        console.log(detallelote)
-                    
-    //                 res.render('comprobanteDos.html', {
-    //                     referencias: detallelote[0],
-    //                 });
-    //                 console.log('Termina')
-                
-            
-        
-
-    // });
-    
 }
-
-// Reference.prototype.get_getDetalleReferenciaById = function(req, res, next) {
-
-//    var self = this;
-//    //asignación de valores mediante parámetros del request
-//    var params = [{ name: 'idReferencia', value: req.query.idReferencia, type: self.model.types.INT }];
-
-//    self.model.query('SEL_DETALLE_REFERENCIA_SP', params, function(error, result) {
-//        var params2 = [{
-//            name: 'idEmpresa',
-//            value: result[0].tipoReferencia,
-//            type: self.model.types.INT
-//        },{
-//            name: 'tipoReferencia',
-//            value: result[0].idEmpresa,
-//            type: self.model.types.INT
-//        }]
-//        self.model.query('SEL_LEYENDAS_PDF_SP', params2, function (error, leyendas) {
-//            res.render('referencia2.html',{referencias:result, leyendas:leyendas});
-//        });
-//    });
-// };
 module.exports = TemplateDos;

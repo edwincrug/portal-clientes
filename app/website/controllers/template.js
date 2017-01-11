@@ -21,7 +21,7 @@ var Template = function(conf) {
 Template.prototype.get_comprobante = function(req, res, next) {
     var self = this;
     //var canvas = new Canvas();
-    console.log(req.query)
+    //console.log(req.query)
     // JsBarcode(canvas, req.query.referencia,{ height: 35,width:1.34,fontSize:12});
     // req.query.barcode =  canvas.toDataURL();
     res.render("comprobante.html",req.query)
